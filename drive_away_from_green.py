@@ -4,6 +4,7 @@
 #!/usr/bin/env python3
 import cv2
 import numpy as np
+import time
 from pathlib import Path
 import penguinPi as ppi
 
@@ -52,6 +53,8 @@ def drive():
             ppi.set_velocity(OUTER_WHEEL, INNER_WHEEL) 
         else:
             assert False
+
+        time.sleep(1)
 
 
 if __name__ == "__main__":
