@@ -55,6 +55,4 @@ def drive():
 
 
 if __name__ == "__main__":
-    img = cv2.imread('./on_robot/collect_data/data/000146-0.50.jpg', cv2.IMREAD_COLOR)
-    command = away_from_green(img)
-    print(command)
+    drive()
