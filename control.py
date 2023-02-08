@@ -43,14 +43,14 @@ def steer_away_from_green(img: np.ndarray) -> str:
 
     return "LEFT"
 
-
-while True:
-    image = camera.frame
-    command = steer_away_from_green(image)
-    if command == "LEFT":
-        ppi.set_velocity(INNER_WHEEL, OUTER_WHEEL) 
-    elif command == "RIGHT":
-        ppi.set_velocity(OUTER_WHEEL, INNER_WHEEL) 
+if __name__=="__main__":
+    while True:
+        image = camera.frame
+        command = steer_away_from_green(image)
+        if command == "LEFT":
+            ppi.set_velocity(INNER_WHEEL, OUTER_WHEEL) 
+        elif command == "RIGHT":
+            ppi.set_velocity(OUTER_WHEEL, INNER_WHEEL) 
 
         
 
