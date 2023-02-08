@@ -63,19 +63,19 @@ class Controller:
         if not leftRoadSensor:
             leftMotor=0
             rightMotor=20
-            # if "comm update" in generalStack: commStack.append("turning right")
+            if "comm update" in generalStack: commStack.append("turning right")
 
         if not rightRoadSensor:
             rightMotor=0
             leftMotor=20
-            # if "comm update" in generalStack: commStack.append("turning right")
+            if "comm update" in generalStack: commStack.append("turning right")
 
         if (not leftRoadSensor) and (not rightRoadSensor):
             leftMotor=-10
             rightMotor=10
-            # if not ("lost the road" in locationStack):
-            #     locationStack.append("lost the road")
-            # if "comm update" in generalStack: commStack.append("turning right")
+            if not ("lost the road" in locationStack):
+                locationStack.append("lost the road")
+            if "comm update" in generalStack: commStack.append("turning right")
 
         # communicate state
         # if "comm update" in generalStack:
