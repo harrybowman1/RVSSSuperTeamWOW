@@ -41,12 +41,12 @@ class Controller:
         image = cv2.resize(inputImage,(32,32))
 
         #context stacks
-        locationStack = ["no idea where i am"]
-        generalStack = []
+        # locationStack = ["no idea where i am"]
+        # generalStack = []
         #comm stack. occasionally give status updates
-        commStack = []
-        if self.time%20 ==0 and len(commStack)>0:
-            print(commStack.pop())
+        # commStack = []
+        # if self.time%20 ==0 and len(commStack)>0:
+        #     print(commStack.pop())
 
         # vague idea of what road looks like. kinda grey
         road = np.array([100,100,100])
@@ -63,25 +63,25 @@ class Controller:
         if not leftRoadSensor:
             leftMotor=0
             rightMotor=20
-            if "comm update" in generalStack: commStack.append("turning right")
+            # if "comm update" in generalStack: commStack.append("turning right")
 
         if not rightRoadSensor:
             rightMotor=0
             leftMotor=20
-            if "comm update" in generalStack: commStack.append("turning right")
+            # if "comm update" in generalStack: commStack.append("turning right")
 
         if (not leftRoadSensor) and (not rightRoadSensor):
             leftMotor=-10
             rightMotor=10
-            if not ("lost the road" in locationStack):
-                locationStack.append("lost the road")
-            if "comm update" in generalStack: commStack.append("turning right")
+            # if not ("lost the road" in locationStack):
+            #     locationStack.append("lost the road")
+            # if "comm update" in generalStack: commStack.append("turning right")
 
         # communicate state
-        if "comm update" in generalStack:
-            generalStack.remove("comm update")
-        if self.timer%5==0:
-            generalStack.append("comm update")
+        # if "comm update" in generalStack:
+        #     generalStack.remove("comm update")
+        # if self.timer%5==0:
+        #     generalStack.append("comm update")
 
 
         return [leftMotor,rightMotor]
