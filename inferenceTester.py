@@ -87,26 +87,42 @@ def steer_away_from_green(img: np.ndarray) -> str:
 
     return "LEFT"
 
-try:
-    while True:
-        image = camera.frame
-        command = steer_away_from_green(image)
-        if command == "LEFT":
-            ppi.set_velocity(INNER_WHEEL, OUTER_WHEEL) 
-        elif command == "RIGHT":
-            ppi.set_velocity(OUTER_WHEEL, INNER_WHEEL) 
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    print("stop")                    
-                    ppi.set_velocity(0,0)
-                    raise KeyboardInterrupt
-
-        
-
-
-        
-
-        
-except KeyboardInterrupt:    
+if __name__=="__main__":
+    #~~~~~~~~~~~~ SET UP Game ~~~~~~~~~~~~~~
+    pygame.init()
+    pygame.display.set_mode((300,300)) #size of pop-up window
+    pygame.key.set_repeat(100) #holding a key sends continuous KEYDOWN events. Input argument is milli-seconds delay between events and controls the sensitivity
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # stop the robot 
     ppi.set_velocity(0,0)
+
+    # init
+    print("initialise camera")
+    camera = ppi.VideoStreamWidget('http://localhost:8080/camera/get')
+    time.sleep(2)
+    print(camera)
+    INNER_WHEEL = 25
+    OUTER_WHEEL = 35
+
+    try:
+        # MAIN LOOP
+        while True:
+            #get image
+            image = camera.frame
+            #set controls
+            command = steer_away_from_green(image)
+            if command == "LEFT":
+                ppi.set_velocity(INNER_WHEEL, OUTER_WHEEL) 
+            elif command == "RIGHT":
+                ppi.set_velocity(OUTER_WHEEL, INNER_WHEEL) 
+
+            # SPACE for shutdown 
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE:
+                        print("stop")                    
+                        ppi.set_velocity(0,0)
+                        raise KeyboardInterrupt
+    #stops motors on shutdown
+    except KeyboardInterrupt:
+        ppi.set_velocity(0,0)
