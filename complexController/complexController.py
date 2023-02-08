@@ -56,7 +56,7 @@ class Controller:
 
         #periodically spit out comms
         if self.time%20 ==0 and len(self.commStack)>0:
-            for i in len(self.commStack):
+            while len(self.commStack)>0:
                 print(self.commStack.pop())
 
 
@@ -72,25 +72,25 @@ class Controller:
         rightGrassSensor = np.linalg.norm(np.average(image[19:22,26:29],(0,1))-grass)<50
 
         # basic control
-        # if "floor it" in self.generalStack:
-        #     leftMotor = 50
-        #     rightMotor = 50
-        #     self.generalStack.remove("floor it")
+        if "floor it" in self.generalStack:
+            leftMotor = 50
+            rightMotor = 50
+            self.generalStack.remove("floor it")
 
-        # if "turn right" in self.generalStack:
-        #     leftMotor = 40
-        #     rightMotor = 20
-        #     self.generalStack.remove("turn right")
+        if "turn right" in self.generalStack:
+            leftMotor = 40
+            rightMotor = 20
+            self.generalStack.remove("turn right")
         
-        # if "turn left" in self.generalStack:
-        #     leftMotor = 20
-        #     rightMotor = 40
-        #     self.generalStack.remove("turn left")
+        if "turn left" in self.generalStack:
+            leftMotor = 20
+            rightMotor = 40
+            self.generalStack.remove("turn left")
 
-        # if "dont see road" in self.locationStack:
-        #     leftMotor=20
-        #     rightMotor=-20
-        #     self.locationStack.remove("dont see road")
+        if "dont see road" in self.locationStack:
+            leftMotor=20
+            rightMotor=-20
+            self.locationStack.remove("dont see road")
 
 
         # photovorey detection
