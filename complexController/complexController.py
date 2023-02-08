@@ -6,6 +6,9 @@ class Controller:
     def __init__(self):
         self.speed = 30
         self.time = 0
+        self.locationStack = ["no idea where i am"]
+        self.commStack = ["comms init"]
+        self.generalStack = []
 
     def steer_away_from_green(img: np.ndarray) -> str:
         """
@@ -41,12 +44,12 @@ class Controller:
         image = cv2.resize(inputImage,(32,32))
 
         #context stacks
-        locationStack = ["no idea where i am"]
-        generalStack = []
+        
+        
         #comm stack. occasionally give status updates
-        commStack = ["init comm stack"]
-        if self.time%20 ==0 and len(commStack)>0:
-            print(commStack.pop())
+        
+        if self.time%20 ==0 and len(self.commStack)>0:
+            print(self.commStack.pop())
 
         # vague idea of what road looks like. kinda grey
         road = np.array([100,100,100])
@@ -63,25 +66,25 @@ class Controller:
         if not leftRoadSensor:
             leftMotor=0
             rightMotor=20
-            if "comm update" in generalStack: commStack.append("turning right")
+            if "comm update" in self.generalStack: self.commStack.append("turning right")
 
         if not rightRoadSensor:
             rightMotor=0
             leftMotor=20
-            if "comm update" in generalStack: commStack.append("turning right")
+            if "comm update" in self.generalStack: self.commStack.append("turning right")
 
         if (not leftRoadSensor) and (not rightRoadSensor):
             leftMotor=-10
             rightMotor=10
-            if not ("lost the road" in locationStack):
-                locationStack.append("lost the road")
-            if "comm update" in generalStack: commStack.append("turning right")
+            if not ("lost the road" in self.locationStack):
+                self.locationStack.append("lost the road")
+            if "comm update" in self.generalStack: self.commStack.append("turning right")
 
         # communicate state
-        if "comm update" in generalStack:
-            generalStack.remove("comm update")
+        if "comm update" in self.generalStack:
+            self.generalStack.remove("comm update")
         if self.time%5==0:
-            generalStack.append("comm update")
+            self.generalStack.append("comm update")
 
 
         return [leftMotor,rightMotor]
