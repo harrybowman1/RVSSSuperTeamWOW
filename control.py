@@ -12,6 +12,7 @@ import penguinPi as ppi
 ppi.set_velocity(0,0)
 print("initialise camera")
 camera = ppi.VideoStreamWidget('http://localhost:8080/camera/get')
+print(camera)
 INNER_WHEEL = 25
 OUTER_WHEEL = 35
 
