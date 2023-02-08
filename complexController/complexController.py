@@ -44,12 +44,12 @@ class Controller:
         image = cv2.resize(inputImage,(32,32))
 
         #maintain stacks
-        if len(self.commStack)>20:
-            self.commStack = self.commStack[:20]
-        if len(self.locationStack)>20:
-            self.locationStack = self.locationStack[:20]
-        if len(self.generalStack)>20:
-            self.generalStack = self.generalStack[:20]
+        # if len(self.commStack)>20:
+        #     self.commStack = self.commStack[:20]
+        # if len(self.locationStack)>20:
+        #     self.locationStack = self.locationStack[:20]
+        # if len(self.generalStack)>20:
+        #     self.generalStack = self.generalStack[:20]
 
 
         #periodically spit out comms

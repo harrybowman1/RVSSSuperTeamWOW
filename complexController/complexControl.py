@@ -50,8 +50,8 @@ if __name__=="__main__":
     #stops motors on shutdown
     except KeyboardInterrupt:
         ppi.set_velocity(0,0)
-    except BaseException as e:
-        raise e
+    except:
+        raise
 
         
 
