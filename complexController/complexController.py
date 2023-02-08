@@ -84,13 +84,13 @@ class Controller:
             self.generalStack.remove("floor it")
 
         if "turn right" in self.generalStack:
-            leftMotor = 20
-            rightMotor = 40
+            leftMotor = 40
+            rightMotor = 20
             self.generalStack.remove("turn right")
         
         if "turn left" in self.generalStack:
-            leftMotor = 20
-            rightMotor = 40
+            leftMotor = 40
+            rightMotor = 20
             self.generalStack.remove("turn left")
 
         if "dont see road" in self.locationStack:
