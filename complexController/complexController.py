@@ -21,6 +21,7 @@ class Controller:
         rightMotor = 20
 
         if not leftRoadSensor:
+            print("left on grass")
             leftMotor+=10
             rightMotor-=20
 
