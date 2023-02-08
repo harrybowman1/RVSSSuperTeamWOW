@@ -29,6 +29,7 @@ if __name__=="__main__":
     OUTER_WHEEL = 35
     brain = Controller()
 
+    print("controller start")
     try:
         # MAIN LOOP
         while True:
