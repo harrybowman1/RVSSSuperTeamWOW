@@ -53,6 +53,12 @@ class Controller:
         if len(self.generalStack)>20:
             self.generalStack = self.generalStack[:20]
 
+        #debugs
+        if self.time%20 ==0 and len(self.generalStack)>0:
+            while len(self.generalStack)>0:
+                print(self.generalStack.pop())
+
+
 
         #periodically spit out comms
         if self.time%20 ==0 and len(self.commStack)>0:
@@ -95,15 +101,18 @@ class Controller:
 
         # photovorey detection
         if not leftRoadSensor:
-            if not rightRoadSensor:
+            if not rightRoadSensor and not "dont see road" in self.locationStack:
                 self.locationStack.append("dont see road")
+                self.commStack.append("lost road")
             else:
-                self.generalStack.append("turn right")
+                if(not "turn right" in self.generalStack):
+                    self.generalStack.append("turn right")
         else:
-            if not rightRoadSensor:
+            if not rightRoadSensor and (not "turn left" in self.generalStack):
                 self.generalStack.append("turn left")
             else:
-                self.generalStack.append("floor it")
+                if(not "floor it" in self.generalStack):
+                    self.generalStack.append("floor it")
             
 
 
