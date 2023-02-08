@@ -14,11 +14,18 @@ class Controller:
 
         road = np.array([100,100,100])
 
-        leftRoadSensor = np.linalg.norm(image[20,5]-road)<100
+        leftRoadSensor = np.linalg.norm(image[20,5]-road)<50
+        rightRoadSensor = np.linalg.norm(image[20,27]-road)<50
 
-        print(leftRoadSensor)
+        leftMotor = 20
+        rightMotor = 20
+
+        if not leftRoadSensor:
+            leftMotor+=10
+            rightMotor-=10
+
 
     
 
         # cv2.imwrite("data/"+str(self.time).zfill(6)+".jpg", inputImage) 
-        return [0,0]
+        return [leftMotor,rightMotor]
