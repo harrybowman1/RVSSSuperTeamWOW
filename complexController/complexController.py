@@ -84,8 +84,8 @@ class Controller:
             self.generalStack.remove("floor it")
 
         if "turn right" in self.generalStack:
-            # leftMotor = 40
-            # rightMotor = 20
+            leftMotor = 20
+            rightMotor = 40
             self.generalStack.remove("turn right")
         
         if "turn left" in self.generalStack:
