@@ -78,7 +78,7 @@ class Controller:
             rightMotor=10
             if not ("lost the road" in self.locationStack):
                 self.locationStack.append("lost the road")
-            if "comm update" in self.generalStack: self.commStack.append("turning right")
+            
 
         # communicate state
         if "comm update" in self.generalStack:
