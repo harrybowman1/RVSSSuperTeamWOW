@@ -14,8 +14,8 @@ class Controller:
 
         road = np.array([100,100,100])
 
-        leftRoadSensor = np.linalg.norm(np.average(image[19:22,4:7],(0,1))-[100,100,100])
-        rightRoadSensor = np.linalg.norm(np.average(image[19:22,26:29],(0,1))-[100,100,100])
+        leftRoadSensor = np.linalg.norm(np.average(image[19:22,4:7],(0,1))-road)<50
+        rightRoadSensor = np.linalg.norm(np.average(image[19:22,26:29],(0,1))-road)<50
 
         leftMotor = 20
         rightMotor = 20
