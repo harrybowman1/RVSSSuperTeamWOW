@@ -89,8 +89,8 @@ class Controller:
             self.generalStack.remove("turn right")
         
         elif "turn left" in self.generalStack:
-            leftMotor = 20
-            rightMotor = 40
+            leftMotor = 0
+            rightMotor = 0
             self.generalStack.remove("turn left")
 
         elif "dont see road" in self.locationStack:
