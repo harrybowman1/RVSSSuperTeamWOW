@@ -80,8 +80,8 @@ class Controller:
         # communicate state
         if "comm update" in generalStack:
             generalStack.remove("comm update")
-        # if self.timer%5==0:
-        #     generalStack.append("comm update")
+        if self.time%5==0:
+            generalStack.append("comm update")
 
 
         return [leftMotor,rightMotor]
