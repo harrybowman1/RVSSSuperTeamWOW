@@ -22,7 +22,12 @@ class Controller:
 
         if not leftRoadSensor:
             leftMotor+=10
-            rightMotor-=10
+            rightMotor-=20
+
+        if not rightRoadSensor:
+            rightMotor+=10
+            leftMotor-=20
+
 
         # cv2.imwrite("data/"+str(self.time).zfill(6)+".jpg", inputImage) 
         return [leftMotor,rightMotor]
