@@ -43,48 +43,67 @@ class Controller:
         self.time+=1
         image = cv2.resize(inputImage,(32,32))
 
-        #context stacks
-        
-        
-        #comm stack. occasionally give status updates
-        
+        #maintain stacks
+        if len(self.commStack)>20:
+            self.commStack = self.commStack[:20]
+        if len(self.locationStack)>20:
+            self.locationStack = self.locationStack[:20]
+        if len(self.generalStack)>20:
+            self.generalStack = self.generalStack[:20]
+
+
+        #periodically spit out comms
         if self.time%20 ==0 and len(self.commStack)>0:
-            print(self.commStack.pop())
+            for i in len(self.commStack):
+                print(self.commStack.pop())
+
 
         # vague idea of what road looks like. kinda grey
         road = np.array([100,100,100])
+        grass = np.array([130,180,75])
 
         # small squares on left and right side. average and check if its road
         leftRoadSensor = np.linalg.norm(np.average(image[19:22,4:7],(0,1))-road)<50
         rightRoadSensor = np.linalg.norm(np.average(image[19:22,26:29],(0,1))-road)<50
+        # check grass
+        leftGrassSensor = np.linalg.norm(np.average(image[19:22,4:7],(0,1))-grass)<50
+        rightGrassSensor = np.linalg.norm(np.average(image[19:22,26:29],(0,1))-grass)<50
 
-        # normal full speed ahead
-        leftMotor = 50
-        rightMotor = 50
+        # basic control
+        if "floor it" in self.generalStack:
+            leftMotor = 50
+            rightMotor = 50
+            self.generalStack.remove("floor it")
 
-        # photovorey control
-        if not leftRoadSensor:
-            leftMotor=0
-            rightMotor=20
-            if "comm update" in self.generalStack: self.commStack.append("turning right")
+        if "turn right" in self.generalStack:
+            leftMotor = 40
+            rightMotor = 20
+            self.generalStack.remove("turn right")
+        
+        if "turn left" in self.generalStack:
+            leftMotor = 20
+            rightMotor = 40
+            self.generalStack.remove("turn left")
 
-        if not rightRoadSensor:
-            rightMotor=0
+        if "dont see road" in self.locationStack:
             leftMotor=20
-            if "comm update" in self.generalStack: self.commStack.append("turning left")
+            rightMotor=-20
+            self.locationStack.remove("dont see road")
 
-        if (not leftRoadSensor) and (not rightRoadSensor):
-            leftMotor=-10
-            rightMotor=10
-            if not ("lost the road" in self.locationStack):
-                self.locationStack.append("lost the road")
+
+        # photovorey detection
+        if not leftRoadSensor:
+            if not rightRoadSensor:
+                self.locationStack.append("dont see road")
+            else:
+                self.generalStack.append("turn right")
+        else:
+            if not rightRoadSensor:
+                self.generalStack.append("turn left")
+            else:
+                self.generalStack.append("floor it")
             
 
-        # communicate state
-        if "comm update" in self.generalStack:
-            self.generalStack.remove("comm update")
-        if self.time%5==0:
-            self.generalStack.append("comm update")
 
 
         return [leftMotor,rightMotor]
