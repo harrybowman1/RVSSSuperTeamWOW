@@ -8,18 +8,26 @@ class Controller:
         self.time = 0
 
     def loop(self,inputImage):
-        self.time+=1
 
+        #helper stuff
+        self.time+=1
         image = cv2.resize(inputImage,(32,32))
 
+        #context stack
+        locationStack = ["no idea where i am"]
+
+        # vague idea of what road looks like. kinda grey
         road = np.array([100,100,100])
 
+        # small squares on left and right side. average and check if its road
         leftRoadSensor = np.linalg.norm(np.average(image[19:22,4:7],(0,1))-road)<50
         rightRoadSensor = np.linalg.norm(np.average(image[19:22,26:29],(0,1))-road)<50
 
+        # normal full speed ahead
         leftMotor = 20
         rightMotor = 20
 
+        # photovorey control
         if not leftRoadSensor:
             leftMotor+=10
             rightMotor-=20
