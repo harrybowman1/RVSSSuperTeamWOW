@@ -52,8 +52,6 @@ if __name__=="__main__":
         ppi.set_velocity(0,0)
     except BaseException as e:
         raise e
-    finally:
-        a = input("done")
 
         
 
