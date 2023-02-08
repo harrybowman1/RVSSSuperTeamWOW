@@ -57,7 +57,7 @@ try:
         image = camera.frame
         
         angle = np.clip(angle, -0.5, 0.5)
-        Kd = 30 #base wheel speeds, increase to go faster, decrease to go slower
+        Kd = 20 #base wheel speeds, increase to go faster, decrease to go slower
         Ka = 30 #how fast to turn when given an angle
         left  = int(Kd + Ka*angle)
         right = int(Kd - Ka*angle)
