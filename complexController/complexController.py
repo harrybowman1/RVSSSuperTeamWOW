@@ -54,9 +54,9 @@ class Controller:
             self.generalStack = self.generalStack[:20]
 
         #debugs
-        if self.time%20 ==0 and len(self.generalStack)>0:
-            while len(self.generalStack)>0:
-                print(self.generalStack.pop())
+        # if self.time%20 ==0 and len(self.generalStack)>0:
+        #     while len(self.generalStack)>0:
+        #         print(self.generalStack.pop())
 
 
 
@@ -84,8 +84,8 @@ class Controller:
             self.generalStack.remove("floor it")
 
         if "turn right" in self.generalStack:
-            leftMotor = 40
-            rightMotor = 20
+            # leftMotor = 40
+            # rightMotor = 20
             self.generalStack.remove("turn right")
         
         if "turn left" in self.generalStack:
