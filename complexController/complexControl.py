@@ -64,7 +64,7 @@ if __name__=="__main__":
             outs = brain.loop(image)
             # print(outs)
             ppi.set_velocity(outs[0],outs[1])
-            
+            print(outs)
             # SPACE for shutdown 
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
