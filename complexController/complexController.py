@@ -41,12 +41,12 @@ class Controller:
         image = cv2.resize(inputImage,(32,32))
 
         #context stacks
-        # locationStack = ["no idea where i am"]
-        # generalStack = []
+        locationStack = ["no idea where i am"]
+        generalStack = []
         #comm stack. occasionally give status updates
-        # commStack = []
-        # if self.time%20 ==0 and len(commStack)>0:
-        #     print(commStack.pop())
+        commStack = []
+        if self.time%20 ==0 and len(commStack)>0:
+            print(commStack.pop())
 
         # vague idea of what road looks like. kinda grey
         road = np.array([100,100,100])
