@@ -44,13 +44,19 @@ if __name__=="__main__":
     print(camera)
     INNER_WHEEL = 25
     OUTER_WHEEL = 35
-    while True:
-        image = camera.frame
-        command = steer_away_from_green(image)
-        if command == "LEFT":
-            ppi.set_velocity(INNER_WHEEL, OUTER_WHEEL) 
-        elif command == "RIGHT":
-            ppi.set_velocity(OUTER_WHEEL, INNER_WHEEL) 
+
+    try:
+        while True:
+            image = camera.frame
+            command = steer_away_from_green(image)
+            if command == "LEFT":
+                ppi.set_velocity(INNER_WHEEL, OUTER_WHEEL) 
+            elif command == "RIGHT":
+                ppi.set_velocity(OUTER_WHEEL, INNER_WHEEL) 
+
+    except KeyboardInterrupt:
+        ppi.set_velocity(0,0)
+
 
         
 
