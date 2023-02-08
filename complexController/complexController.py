@@ -90,7 +90,7 @@ class Controller:
         
         elif "turn left" in self.generalStack:
             leftMotor = 0
-            rightMotor = 0
+            rightMotor = 20
             self.generalStack.remove("turn left")
 
         elif "turn around" in self.generalStack:
