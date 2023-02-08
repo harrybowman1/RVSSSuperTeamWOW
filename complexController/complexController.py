@@ -56,18 +56,18 @@ class Controller:
         rightRoadSensor = np.linalg.norm(np.average(image[19:22,26:29],(0,1))-road)<50
 
         # normal full speed ahead
-        leftMotor = 20
-        rightMotor = 20
+        leftMotor = 100
+        rightMotor = 100
 
         # photovorey control
         if not leftRoadSensor:
-            leftMotor+=10
-            rightMotor-=20
+            leftMotor=0
+            rightMotor=20
             if "comm update" in generalStack: commStack.append("turning right")
 
         if not rightRoadSensor:
-            rightMotor+=10
-            leftMotor-=20
+            rightMotor=0
+            leftMotor=20
             if "comm update" in generalStack: commStack.append("turning right")
 
         if (not leftRoadSensor) and (not rightRoadSensor):
