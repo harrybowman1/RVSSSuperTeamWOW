@@ -54,9 +54,9 @@ class Controller:
             self.generalStack = self.generalStack[:20]
 
         #debugs
-        # if self.time%20 ==0 and len(self.generalStack)>0:
-        #     while len(self.generalStack)>0:
-        #         print(self.generalStack.pop())
+        if self.time%20 ==0 and len(self.generalStack)>0:
+            while len(self.generalStack)>0:
+                print(self.generalStack.pop())
 
 
 
@@ -84,8 +84,8 @@ class Controller:
             self.generalStack.remove("floor it")
 
         if "turn right" in self.generalStack:
-            # leftMotor = 40
-            # rightMotor = 20
+            leftMotor = 40
+            rightMotor = 20
             self.generalStack.remove("turn right")
         
         if "turn left" in self.generalStack:
@@ -100,19 +100,17 @@ class Controller:
 
 
         # photovorey detection
-        if not leftRoadSensor:
-            if not rightRoadSensor and not "dont see road" in self.locationStack:
-                self.locationStack.append("dont see road")
-                self.commStack.append("lost road")
-            else:
-                if(not "turn right" in self.generalStack):
-                    self.generalStack.append("turn right")
+        if not leftRoadSensor and not rightRoadSensor:
+            self.locationStack.append("dont see road")
         else:
-            if not rightRoadSensor and (not "turn left" in self.generalStack):
-                self.generalStack.append("turn left")
+            if leftRoadSensor and rightRoadSensor:
+                self.generalStack.append("floor it")
             else:
-                if(not "floor it" in self.generalStack):
-                    self.generalStack.append("floor it")
+                if leftRoadSensor:
+                    self.generalStack.append("turn left")
+                elif rightRoadSensor:
+                    self.generalStack.append("turn right")
+    
             
 
 
