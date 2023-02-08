@@ -54,9 +54,9 @@ class Controller:
             self.generalStack = self.generalStack[:20]
 
         #debugs
-        # if self.time%20 ==0 and len(self.generalStack)>0:
-        #     while len(self.generalStack)>0:
-        #         print(self.generalStack.pop())
+        if self.time%20 ==0 and len(self.generalStack)>0:
+            while len(self.generalStack)>0:
+                print(self.generalStack.pop())
 
 
 
@@ -104,7 +104,8 @@ class Controller:
             self.locationStack.append("dont see road")
         else:
             if not leftRoadSensor:
-                self.generalStack.append("turn right")
+                # self.generalStack.append("turn right")
+                pass
             elif not rightRoadSensor:
                 self.generalStack.append("turn left")
             else:
