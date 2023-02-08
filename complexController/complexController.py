@@ -103,9 +103,8 @@ class Controller:
         if not leftRoadSensor and not rightRoadSensor:
             self.locationStack.append("dont see road")
         else:
-            if not leftRoadSensor:
-                # self.generalStack.append("turn right")
-                pass
+            if leftRoadSensor:
+                self.generalStack.append("turn left")
             elif not rightRoadSensor:
                 self.generalStack.append("turn left")
             else:
