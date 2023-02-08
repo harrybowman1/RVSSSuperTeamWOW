@@ -60,7 +60,6 @@ if __name__=="__main__":
         while True:
             #get image
             image = camera.frame
-            camera.show_frame()
             #set controls
             outs = brain.loop(image)
             ppi.set_velocity(outs[0],outs[1])
