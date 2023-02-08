@@ -93,15 +93,15 @@ class Controller:
             rightMotor = 0
             self.generalStack.remove("turn left")
 
-        elif "dont see road" in self.locationStack:
+        elif "turn around" in self.generalStack:
             leftMotor=20
             rightMotor=-20
-            self.locationStack.remove("dont see road")
+            self.locationStack.remove("turn around")
 
 
         # photovorey detection
         if not leftRoadSensor and not rightRoadSensor:
-            self.locationStack.append("dont see road")
+            self.generalStack.append("turn around")
         else:
             if leftRoadSensor and rightRoadSensor:
                 self.generalStack.append("floor it")
