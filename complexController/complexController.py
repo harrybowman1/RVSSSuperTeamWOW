@@ -44,7 +44,7 @@ class Controller:
         locationStack = ["no idea where i am"]
         generalStack = []
         #comm stack. occasionally give status updates
-        commStack = []
+        commStack = ["init comm stack"]
         if self.time%20 ==0 and len(commStack)>0:
             print(commStack.pop())
 
@@ -56,8 +56,8 @@ class Controller:
         rightRoadSensor = np.linalg.norm(np.average(image[19:22,26:29],(0,1))-road)<50
 
         # normal full speed ahead
-        leftMotor = 100
-        rightMotor = 100
+        leftMotor = 50
+        rightMotor = 50
 
         # photovorey control
         if not leftRoadSensor:
