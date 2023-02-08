@@ -40,6 +40,7 @@ if __name__=="__main__":
     ppi.set_velocity(0,0)
     print("initialise camera")
     camera = ppi.VideoStreamWidget('http://localhost:8080/camera/get')
+    time.sleep(2)
     print(camera)
     INNER_WHEEL = 25
     OUTER_WHEEL = 35
