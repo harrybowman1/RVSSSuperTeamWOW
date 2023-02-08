@@ -96,7 +96,7 @@ class Controller:
         elif "turn around" in self.generalStack:
             leftMotor=20
             rightMotor=-20
-            self.locationStack.remove("turn around")
+            self.generalStack.remove("turn around")
 
 
         # photovorey detection
