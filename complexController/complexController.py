@@ -71,7 +71,7 @@ class Controller:
         if not rightRoadSensor:
             rightMotor=0
             leftMotor=20
-            if "comm update" in self.generalStack: self.commStack.append("turning right")
+            if "comm update" in self.generalStack: self.commStack.append("turning left")
 
         if (not leftRoadSensor) and (not rightRoadSensor):
             leftMotor=-10
