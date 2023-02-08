@@ -8,14 +8,6 @@ import cv2
 import numpy as np
 import penguinPi as ppi
 
-# stop the robot 
-ppi.set_velocity(0,0)
-print("initialise camera")
-camera = ppi.VideoStreamWidget('http://localhost:8080/camera/get')
-print(camera)
-INNER_WHEEL = 25
-OUTER_WHEEL = 35
-
 def steer_away_from_green(img: np.ndarray) -> str:
     """returns a driving command to drive away from the centroid of the green channel of img
     
@@ -44,6 +36,13 @@ def steer_away_from_green(img: np.ndarray) -> str:
     return "LEFT"
 
 if __name__=="__main__":
+    # stop the robot 
+    ppi.set_velocity(0,0)
+    print("initialise camera")
+    camera = ppi.VideoStreamWidget('http://localhost:8080/camera/get')
+    print(camera)
+    INNER_WHEEL = 25
+    OUTER_WHEEL = 35
     while True:
         image = camera.frame
         command = steer_away_from_green(image)
