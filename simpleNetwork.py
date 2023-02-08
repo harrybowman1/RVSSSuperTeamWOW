@@ -34,7 +34,7 @@ class SteerDataSet(Dataset):
         
         #Downsize the image
         newIm = TF.resize(img, [32,32])
-        steering = f.split("/")[-1].split(self.img_ext)[0][6:]
+        steering = f.split("/")[-1].split(self.img_ext)[0][-3:]
         steering = np.float32(steering)        
     
         sample = {"image":newIm , "steering":steering}        
@@ -82,8 +82,8 @@ def test():
         im = S["image"]    
         y  = S["steering"]
         
-        print(im.shape)
-        print(y)
+        # print(im.shape)
+        # print(y)
         
 
 
