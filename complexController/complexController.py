@@ -24,8 +24,5 @@ class Controller:
             leftMotor+=10
             rightMotor-=10
 
-
-    
-
         # cv2.imwrite("data/"+str(self.time).zfill(6)+".jpg", inputImage) 
         return [leftMotor,rightMotor]
