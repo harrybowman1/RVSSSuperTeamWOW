@@ -62,7 +62,7 @@ if __name__=="__main__":
             image = camera.frame
             #set controls
             outs = brain.loop(image)
-            ppi.set_velocity(outs[0],outs[1])
+            ppi.set_velocity(5,5)
             print(outs)
             # SPACE for shutdown 
             for event in pygame.event.get():
