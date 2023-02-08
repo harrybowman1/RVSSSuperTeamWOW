@@ -46,18 +46,18 @@ class Controller:
         rightMotor = 0
 
         #maintain stacks
-        # if len(self.commStack)>20:
-        #     self.commStack = self.commStack[:20]
-        # if len(self.locationStack)>20:
-        #     self.locationStack = self.locationStack[:20]
-        # if len(self.generalStack)>20:
-        #     self.generalStack = self.generalStack[:20]
+        if len(self.commStack)>20:
+            self.commStack = self.commStack[:20]
+        if len(self.locationStack)>20:
+            self.locationStack = self.locationStack[:20]
+        if len(self.generalStack)>20:
+            self.generalStack = self.generalStack[:20]
 
 
         #periodically spit out comms
-        # if self.time%20 ==0 and len(self.commStack)>0:
-        #     for i in len(self.commStack):
-        #         print(self.commStack.pop())
+        if self.time%20 ==0 and len(self.commStack)>0:
+            for i in len(self.commStack):
+                print(self.commStack.pop())
 
 
         # vague idea of what road looks like. kinda grey
