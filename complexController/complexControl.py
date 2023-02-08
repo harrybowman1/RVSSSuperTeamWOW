@@ -10,32 +10,6 @@ import penguinPi as ppi
 import pygame
 from complexController import Controller
 
-def steer_away_from_green(img: np.ndarray) -> str:
-    """returns a driving command to drive away from the centroid of the green channel of img
-    
-    Args:
-        img: imput image
-        
-    Returns:
-        either 'LEFT' or 'RIGHT'
-    """
-
-    assert img is not None, "no image file found"
-
-    moments = cv2.moments(img[:, :, 1])
-    x_centroid = moments['m10'] / moments['m00']
-    y_centroid = moments['m01'] / moments['m00']
-
-    (height, width, channels) = img.shape
-    assert y_centroid <= height
-    assert x_centroid <= width
-    assert y_centroid >= 0
-    assert y_centroid >= 0
-    
-    if x_centroid < width/2:
-        return "RIGHT"
-
-    return "LEFT"
 
 if __name__=="__main__":
     #~~~~~~~~~~~~ SET UP Game ~~~~~~~~~~~~~~
@@ -62,8 +36,9 @@ if __name__=="__main__":
             image = camera.frame
             #set controls
             outs = brain.loop(image)
+            # print(outs)
             ppi.set_velocity(outs[0],outs[1])
-
+            print(outs)
             # SPACE for shutdown 
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
