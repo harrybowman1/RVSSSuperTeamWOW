@@ -92,14 +92,17 @@ class Controller:
                 leftMotor = 10
                 rightMotor = 10
             else:
-                leftMotor = 40
+                leftMotor = 20
                 rightMotor = 0
         elif "turn left" in self.generalStack:
             leftMotor = 0
-            rightMotor = 40
-        elif "floor it" in self.generalStack:
-            leftMotor = 20
             rightMotor = 20
+        elif "floor it" in self.generalStack:
+            leftMotor = 50
+            rightMotor = 50
+        elif "turn around" in self.generalStack:
+            leftMotor = 5
+            rightMotor = -5
 
 
 
