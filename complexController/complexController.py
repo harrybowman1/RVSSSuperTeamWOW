@@ -73,17 +73,17 @@ class Controller:
         centerFarGrassSensor = centerFarSensor[0]<80 and centerFarSensor[0]>45 and centerFarSensor[1]>70 and centerFarSensor[2]>70
 
         # photovorey detection
-        if centerRoadSensor:
+        if centerRoadSensor and leftRoadSensor and rightRoadSensor:
             leftMotor=20
             rightMotor=20
-        
-        if not leftRoadSensor:
-            leftMotor=20
-            rightMotor=0
-        
-        if not rightRoadSensor:
-            leftMotor=0
-            rightMotor=20
+        else:
+            if leftRoadSensor:
+                leftMotor=0
+                rightMotor=20
+            
+            if rightRoadSensor:
+                leftMotor=20
+                rightMotor=0
 
         
 
