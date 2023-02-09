@@ -78,10 +78,10 @@ class Controller:
             rightMotor = 10
 
         # are we in right or left turn segment?
-        # if not leftRoadSensor:
-        #     if not "lost road on left" in self.contextStack:
-        #         self.contextStack.append("lost road on left")
-        #     self.timer1+=1
+        if not leftRoadSensor:
+            if not "lost road on left" in self.contextStack:
+                self.contextStack.append("lost road on left")
+            self.timer1+=1
         # if leftRoadSensor:
         #     self.contextStack.remove("lost road on left")
         #     print(self.timer1)
