@@ -78,12 +78,12 @@ class Controller:
             rightMotor=40
         
         if rightGrassSensor or rightFarGrassSensor:
-            leftMotor=0
+            leftMotor=-20
             rightMotor=20
         
         if leftGrassSensor or leftFarGrassSensor:
             leftMotor=20
-            rightMotor=0
+            rightMotor=-20
         
         if centerGrassSensor:
             leftMotor=-20
