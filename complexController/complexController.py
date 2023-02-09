@@ -6,9 +6,8 @@ class Controller:
     def __init__(self):
         self.speed = 30
         self.time = 0
-        self.locationStack = ["no idea where i am"]
-        self.commStack = ["comms init"]
         self.generalStack = []
+        self.contextStack = []
 
     def steer_away_from_green(img: np.ndarray) -> str:
         """
@@ -42,24 +41,12 @@ class Controller:
         # cv2.imwrite("data/"+str(self.time).zfill(6)+".jpg", inputImage) 
         self.time+=1
         image = cv2.resize(inputImage,(32,32))
+        image = cv2.cvtColor(image,cv2.COLOR_BGR2HSV)
         leftMotor = 0
         rightMotor = 0
 
         #maintain stacks. empty general stack
         self.generalStack = []
-
-
-        # if len(self.commStack)>20:
-        #     self.commStack = self.commStack[:20]
-        # if len(self.locationStack)>20:
-        #     self.locationStack = self.locationStack[:20]
-        # if len(self.generalStack)>20:
-        #     self.generalStack = self.generalStack[:20]
-
-        #debugs
-        # if self.time%20 ==0 and len(self.generalStack)>0:
-        #     while len(self.generalStack)>0:
-        #         print(self.generalStack.pop())
 
 
         #periodically spit out comms
@@ -68,25 +55,22 @@ class Controller:
                 print(self.commStack.pop())
 
 
-        # vague idea of what road looks like. kinda grey
-        road = np.array([100,100,100])
-        grass = np.array([130,180,75])
 
         #define square sensors
-        leftCloseSensor = np.average(image[19:22,4:7],(0,1))
-        rightCloseSensor = np.average(image[19:22,26:29],(0,1))
-        centerCloseSensor = np.average(image[19:22,14:17],(0,1))
+        leftCloseSensor = np.average(image[25:29,4:7],(0,1))
+        rightCloseSensor = np.average(image[25:29,26:29],(0,1))
+        centerCloseSensor = np.average(image[25:29,15:18],(0,1))
         leftFarSensor = np.average(image[10:13,4:7],(0,1))
         rightFarSensor = np.average(image[10:13,26:29],(0,1))
-        centerFarSensor = np.average(image[10:13,14:17],(0,1))
+        centerFarSensor = np.average(image[10:13,15:18],(0,1))
 
         # small squares on left and right side. average and check if its road
-        leftRoadSensor = np.linalg.norm(leftCloseSensor-road)<50
-        rightRoadSensor = np.linalg.norm(rightCloseSensor-road)<50
-        centerRoadSensor = np.linalg.norm(centerCloseSensor-road)<50
+        leftRoadSensor = leftCloseSensor[1]<50 or leftCloseSensor[2]<150
+        rightRoadSensor = rightCloseSensor[1]<50 or rightCloseSensor[2]<150
+        centerRoadSensor = centerCloseSensor[1]<50 or centerCloseSensor[2]<150
         # check grass
-        leftGrassSensor = np.linalg.norm(leftCloseSensor-grass)<50
-        rightGrassSensor = np.linalg.norm(rightCloseSensor-grass)<50
+        leftGrassSensor = False
+        rightGrassSensor = False
 
         # photovorey detection
         if not leftRoadSensor and not rightRoadSensor:
@@ -117,8 +101,8 @@ class Controller:
             self.generalStack.remove("turn left")
 
         elif "turn around" in self.generalStack:
-            leftMotor=20
-            rightMotor=-20
+            leftMotor=0
+            rightMotor=0
             self.generalStack.remove("turn around")
 
 
