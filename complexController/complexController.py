@@ -77,6 +77,11 @@ class Controller:
             leftMotor = -10
             rightMotor = 10
 
+        if "turn right" in self.generalStack:
+            leftMotor = 10
+            rightMotor = -10
+
+
         # are we in right or left turn segment?
         if not leftRoadSensor:
             if not "lost road on left" in self.contextStack:
@@ -87,6 +92,9 @@ class Controller:
                 self.contextStack.remove("lost road on left")
                 print(self.timer1)
             self.timer1 = 0
+
+        if self.timer1>10:
+            self.generalStack.append("turn right")
 
 
         #debugs. override wheels for debugging
