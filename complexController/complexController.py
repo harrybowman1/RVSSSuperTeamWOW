@@ -80,18 +80,27 @@ class Controller:
                 self.generalStack.append("floor it")
             else:
                 if leftRoadSensor or not rightRoadSensor or rightGrassSensor or leftFarRoadSensor:
+                    self.generalStack.append("turn left")
+                if rightRoadSensor or not leftRoadSensor or leftGrassSensor or rightFarRoadSensor:
                     self.generalStack.append("turn right")
-                else:
-                    self.generalStack.append("turn right")
+                    
 
         # basic control
         if "turn right" in self.generalStack:
-            leftMotor = 40
-            rightMotor = 0
-        
+            if "turn left" in self.generalStack:
+                leftMotor = 10
+                rightMotor = 10
+            else:
+                leftMotor = 40
+                rightMotor = 0
         elif "turn left" in self.generalStack:
             leftMotor = 0
             rightMotor = 40
+
+
+            
+        
+        
 
 
         #am i on the track?
