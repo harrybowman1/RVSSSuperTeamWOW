@@ -49,13 +49,6 @@ class Controller:
         self.generalStack = []
 
 
-        #periodically spit out comms
-        if self.time%20 ==0 and len(self.commStack)>0:
-            while len(self.commStack)>0:
-                print(self.commStack.pop())
-
-
-
         #define square sensors
         leftCloseSensor = np.average(image[25:29,4:7],(0,1))
         rightCloseSensor = np.average(image[25:29,26:29],(0,1))
@@ -105,6 +98,11 @@ class Controller:
             rightMotor=0
             self.generalStack.remove("turn around")
 
+        #debugs. override wheels for debugging
+        debug = False
+        if debug:
+            leftMotor=0
+            rightMotor=0
 
         
     
