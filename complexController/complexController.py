@@ -89,6 +89,9 @@ class Controller:
             leftMotor=-20
             rightMotor=-20
 
+        if centerGrassSensor or centerFarGrassSensor:
+            print("grass")
+
         
 
 
