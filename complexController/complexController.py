@@ -7,7 +7,7 @@ class Controller:
         self.speed = 30
         self.time = 0
         self.generalStack = []
-        self.contextStack = []
+        self.contextStack = ["dont know where i am"]
 
     def steer_away_from_green(img: np.ndarray) -> str:
         """
@@ -57,13 +57,20 @@ class Controller:
         rightFarSensor = np.average(image[10:13,26:29],(0,1))
         centerFarSensor = np.average(image[10:13,15:18],(0,1))
 
-        # small squares on left and right side. average and check if its road
+        #check if its road
         leftRoadSensor = leftCloseSensor[1]<50 or leftCloseSensor[2]<100
         rightRoadSensor = rightCloseSensor[1]<50 or rightCloseSensor[2]<100
         centerRoadSensor = centerCloseSensor[1]<50 or centerCloseSensor[2]<100
+        leftFarRoadSensor = leftFarSensor[1]<50 or leftFarSensor[2]<100
+        rightFarRoadSensor = rightFarSensor[1]<50 or rightFarSensor[2]<100
+        centerFarRoadSensor = centerFarSensor[1]<50 or centerFarSensor[2]<100
         # check grass
         leftGrassSensor = leftCloseSensor[0]<80 and leftCloseSensor[0]>45 and leftCloseSensor[1]>70 and leftCloseSensor[2]>70
         rightGrassSensor = rightCloseSensor[0]<80 and rightCloseSensor[0]>45 and rightCloseSensor[1]>70 and rightCloseSensor[2]>70
+        centerGrassSensor = centerCloseSensor[0]<80 and centerCloseSensor[0]>45 and centerCloseSensor[1]>70 and centerCloseSensor[2]>70
+        leftFarGrassSensor = leftFarSensor[0]<80 and leftFarSensor[0]>45 and leftFarSensor[1]>70 and leftFarSensor[2]>70
+        rightFarGrassSensor = rightFarSensor[0]<80 and rightFarSensor[0]>45 and rightFarSensor[1]>70 and rightFarSensor[2]>70
+        centerFarGrassSensor = centerFarSensor[0]<80 and centerFarSensor[0]>45 and centerFarSensor[1]>70 and centerFarSensor[2]>70
 
         # photovorey detection
         if not leftRoadSensor and not rightRoadSensor:
@@ -72,31 +79,35 @@ class Controller:
             if leftRoadSensor and rightRoadSensor and centerRoadSensor:
                 self.generalStack.append("floor it")
             else:
-                if leftRoadSensor or not rightRoadSensor or rightGrassSensor:
+                if leftRoadSensor or not rightRoadSensor or rightGrassSensor or leftFarRoadSensor:
                     self.generalStack.append("turn left")
-                elif rightRoadSensor or not leftRoadSensor or leftGrassSensor:
+                elif rightRoadSensor or not leftRoadSensor or leftGrassSensor or rightFarRoadSensor:
                     self.generalStack.append("turn right")
 
         # basic control
-        if "floor it" in self.generalStack:
-            leftMotor = 50
-            rightMotor = 50
-            self.generalStack.remove("floor it")
-            
-        elif "turn right" in self.generalStack:
+        if "turn right" in self.generalStack:
             leftMotor = 40
             rightMotor = 20
-            self.generalStack.remove("turn right")
         
         elif "turn left" in self.generalStack:
             leftMotor = 20
             rightMotor = 40
-            self.generalStack.remove("turn left")
 
-        elif "turn around" in self.generalStack:
-            leftMotor=0
-            rightMotor=0
-            self.generalStack.remove("turn around")
+
+        #am i on the track?
+        if ("dont know where i am" in self.contextStack):
+            if(leftFarGrassSensor or rightFarGrassSensor or centerFarGrassSensor):
+                self.contextStack.remove("dont know where i am")
+                self.contextStack.append("grass track in front")
+            else:
+                self.generalStack.append("revolve")
+
+
+        if ("revolve" in self.generalStack):
+            leftMotor = -10
+            rightMotor = 10
+
+
 
         #debugs. override wheels for debugging
         debug = False
