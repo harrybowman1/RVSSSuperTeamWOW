@@ -72,18 +72,27 @@ class Controller:
         road = np.array([100,100,100])
         grass = np.array([130,180,75])
 
+        #define square sensors
+        leftCloseSensor = np.average(image[19:22,4:7],(0,1))
+        rightCloseSensor = np.average(image[19:22,26:29],(0,1))
+        centerCloseSensor = np.average(image[19:22,14:17],(0,1))
+        leftFarSensor = np.average(image[10:13,4:7],(0,1))
+        rightFarSensor = np.average(image[10:13,26:29],(0,1))
+        centerFarSensor = np.average(image[10:13,14:17],(0,1))
+
         # small squares on left and right side. average and check if its road
-        leftRoadSensor = np.linalg.norm(np.average(image[19:22,4:7],(0,1))-road)<50
-        rightRoadSensor = np.linalg.norm(np.average(image[19:22,26:29],(0,1))-road)<50
+        leftRoadSensor = np.linalg.norm(leftCloseSensor-road)<50
+        rightRoadSensor = np.linalg.norm(rightCloseSensor-road)<50
+        centerRoadSensor = np.linalg.norm(centerCloseSensor-road)<50
         # check grass
-        leftGrassSensor = np.linalg.norm(np.average(image[19:22,4:7],(0,1))-grass)<50
-        rightGrassSensor = np.linalg.norm(np.average(image[19:22,26:29],(0,1))-grass)<50
+        leftGrassSensor = np.linalg.norm(leftCloseSensor-grass)<50
+        rightGrassSensor = np.linalg.norm(rightCloseSensor-grass)<50
 
         # photovorey detection
         if not leftRoadSensor and not rightRoadSensor:
             self.generalStack.append("turn around")
         else:
-            if leftRoadSensor and rightRoadSensor:
+            if leftRoadSensor and rightRoadSensor and centerRoadSensor:
                 self.generalStack.append("floor it")
             else:
                 if leftRoadSensor or not rightRoadSensor or rightGrassSensor:
