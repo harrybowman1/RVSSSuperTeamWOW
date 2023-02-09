@@ -81,17 +81,23 @@ class Controller:
         rightFarRoadSensor = np.linalg.norm(rightFarSensor-road)<100
         centerFarRoadSensor = np.linalg.norm(centerFarSensor-road)<100
 
+        #grass sense
+
         # photovorey detection
         if centerRoadSensor:
-            leftMotor=40
-            rightMotor=40
+            leftMotor=20
+            rightMotor=20
 
-        if not rightFarRoadSensor:
+        if leftFarRoadSensor:
             leftMotor=10
             rightMotor=30
-        elif not leftFarRoadSensor:
+        elif rightFarRoadSensor:
             leftMotor=30
             rightMotor=10
+
+        if centerRoadSensor and centerFarRoadSensor:
+            leftMotor=50
+            rightMotor=50
 
         
         if not rightRoadSensor:
