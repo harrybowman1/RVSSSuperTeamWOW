@@ -41,6 +41,7 @@ OUTER_WHEEL = 35
 
 if __name__=="__main__":
     #~~~~~~~~~~~~ SET UP Game ~~~~~~~~~~~~~~
+    print("setting up")
     pygame.init()
     pygame.display.set_mode((300,300)) #size of pop-up window
     pygame.key.set_repeat(100) #holding a key sends continuous KEYDOWN events. Input argument is milli-seconds delay between events and controls the sensitivity
