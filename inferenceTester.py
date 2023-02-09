@@ -1,4 +1,4 @@
-from simpleNetwork import *
+from simpleNetwork import CustomBiggerNet
 import numpy as np
 from glob import glob
 from torchvision import transforms
@@ -20,7 +20,7 @@ import cv2
 import numpy as np
 import penguinPi as ppi
 import pygame
-from networkTrainer import *
+# from networkTrainer import *
 from HarrysLibs import *
 
 
@@ -76,6 +76,11 @@ if __name__=="__main__":
     OUTER_ADJ = 15
     STRAIGHT_ADJ = 15
 
+    steerConf = 0
+    steerTracker = 4
+    trackConf = 0
+    trackTracker = 4
+
     try:
         # MAIN LOOP
         while True:
@@ -84,25 +89,41 @@ if __name__=="__main__":
             #set controls
             steer, track = modelPredictSteerClass(image, net)
 
-            #Cornering
-            if steer == LEFT and track == LEFT:
-                ppi.set_velocity(INNER_TURN, OUTER_TURN) 
-            elif steer == RIGHT and track == RIGHT:
-                ppi.set_velocity(OUTER_TURN, INNER_TURN) 
-
-            #Fanging
-            elif steer == STRAIGHT and track == STRAIGHT:
-                ppi.set_velocity(FANGIN, FANGIN) 
-
-            #Adjusting
-            elif steer == LEFT and track != LEFT:
-                ppi.set_velocity(INNER_ADJ, OUTER_ADJ) 
-            elif steer == RIGHT and track != RIGHT:
-                ppi.set_velocity(OUTER_ADJ, INNER_ADJ) 
-            elif steer == STRAIGHT and track != STRAIGHT:
-                ppi.set_velocity(STRAIGHT_ADJ, STRAIGHT_ADJ) 
+            #Check confidence
+            if trackTracker == track:
+                trackConf += 1
             else:
-                raise Exception ("Wrong combo of steer and track")
+                trackConf = 0
+                trackTracker = track
+            if steerTracker == steer:
+                steerConf += 1
+            else:
+                steerConf = 0
+                steerTracker = steer
+            
+            # steerAdd = trackConf 
+            
+            #If steer conf is high, change the steer
+            if steerConf > 5:
+                #Cornering
+                if steer == LEFT and track == LEFT:
+                    ppi.set_velocity(INNER_TURN, OUTER_TURN+steerConf) 
+                elif steer == RIGHT and track == RIGHT:
+                    ppi.set_velocity(OUTER_TURN, INNER_TURN+steerConf) 
+
+                #Fanging
+                elif steer == STRAIGHT and track == STRAIGHT:
+                    ppi.set_velocity(FANGIN+steerConf, FANGIN+steerConf) 
+
+                #Adjusting
+                elif steer == LEFT and track != LEFT:
+                    ppi.set_velocity(INNER_ADJ, OUTER_ADJ+steerConf) 
+                elif steer == RIGHT and track != RIGHT:
+                    ppi.set_velocity(OUTER_ADJ+steerConf, INNER_ADJ) 
+                elif steer == STRAIGHT and track != STRAIGHT:
+                    ppi.set_velocity(STRAIGHT_ADJ+steerConf, STRAIGHT_ADJ+steerConf) 
+                else:
+                    raise Exception ("Wrong combo of steer and track")
 
 
             # SPACE for shutdown 
