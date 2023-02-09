@@ -88,24 +88,26 @@ class Controller:
             leftMotor=20
             rightMotor=20
 
-        if leftFarRoadSensor:
+        if not rightFarRoadSensor:
             leftMotor=10
             rightMotor=30
-        elif rightFarRoadSensor:
+            print("left slow")
+        elif not leftFarRoadSensor:
             leftMotor=30
             rightMotor=10
+            print("right slow")
 
         if centerRoadSensor and centerFarRoadSensor:
             leftMotor=50
             rightMotor=50
 
         
-        if not rightRoadSensor:
-            leftMotor=-20
-            rightMotor=20
-        elif not leftRoadSensor:
-            leftMotor=20
-            rightMotor=-20
+        # if not rightRoadSensor:
+        #     leftMotor=-20
+        #     rightMotor=20
+        # elif not leftRoadSensor:
+        #     leftMotor=20
+        #     rightMotor=-20
         
         # if centerGrassSensor:
         #     leftMotor=-20
