@@ -80,7 +80,7 @@ class Controller:
                 self.generalStack.append("floor it")
             else:
                 if leftRoadSensor or not rightRoadSensor or rightGrassSensor or leftFarRoadSensor:
-                    self.generalStack.append("turn left")
+                    self.generalStack.append("turn right")
                 else:
                     self.generalStack.append("turn right")
 
