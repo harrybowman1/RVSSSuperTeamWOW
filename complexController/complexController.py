@@ -58,9 +58,9 @@ class Controller:
         centerFarSensor = np.average(image[10:13,15:18],(0,1))
 
         #check if its road
-        leftRoadSensor = leftCloseSensor[1]<50 or leftCloseSensor[2]<100
-        rightRoadSensor = rightCloseSensor[1]<50 or rightCloseSensor[2]<100
-        centerRoadSensor = centerCloseSensor[1]<50 or centerCloseSensor[2]<100
+        leftRoadSensor = leftCloseSensor[1]<50 or leftCloseSensor[2]<80
+        rightRoadSensor = rightCloseSensor[1]<50 or rightCloseSensor[2]<80
+        centerRoadSensor = centerCloseSensor[1]<50 or centerCloseSensor[2]<80
         leftFarRoadSensor = leftFarSensor[1]<50 or leftFarSensor[2]<100
         rightFarRoadSensor = rightFarSensor[1]<50 or rightFarSensor[2]<100
         centerFarRoadSensor = centerFarSensor[1]<50 or centerFarSensor[2]<100
