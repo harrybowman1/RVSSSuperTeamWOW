@@ -77,11 +77,11 @@ class Controller:
             leftMotor=20
             rightMotor=20
         else:
-            if leftRoadSensor:
+            if leftRoadSensor or rightGrassSensor:
                 leftMotor=0
                 rightMotor=20
             
-            if rightRoadSensor:
+            if rightRoadSensor or leftGrassSensor:
                 leftMotor=20
                 rightMotor=0
 
