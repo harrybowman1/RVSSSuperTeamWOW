@@ -43,6 +43,14 @@ if __name__=="__main__":
             # SPACE for shutdown 
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_UP:
+                        ppi.set_velocity(20,20)
+                    if event.key == pygame.K_DOWN:
+                        ppi.set_velocity(0,0)
+                    if event.key == pygame.K_RIGHT:
+                        ppi.set_velocity(30,10)
+                    if event.key == pygame.K_LEFT:
+                        ppi.set_velocity(10,30)
                     if event.key == pygame.K_SPACE:
                         print("stop")                    
                         ppi.set_velocity(0,0)

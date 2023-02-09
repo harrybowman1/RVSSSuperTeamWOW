@@ -4,7 +4,6 @@ import numpy as np
 class Controller:
 
     def __init__(self):
-        self.speed = 30
         self.time = 0
         self.generalStack = []
         self.contextStack = ["dont know where i am"]
@@ -38,10 +37,8 @@ class Controller:
     def loop(self,inputImage):
 
         #helper stuff
-        # cv2.imwrite("data/"+str(self.time).zfill(6)+".jpg", inputImage) 
         self.time+=1
         image = cv2.resize(inputImage,(32,32))
-        # image = cv2.cvtColor(image,cv2.COLOR_BGR2HSV)
         leftMotor = 0
         rightMotor = 0
         road = np.array([100,100,100])
@@ -58,121 +55,36 @@ class Controller:
         rightFarSensor = np.average(image[10:13,26:29],(0,1))
         centerFarSensor = np.average(image[10:13,15:18],(0,1))
 
-        # #check if its road
-        # leftRoadSensor = leftCloseSensor[1]<50 or leftCloseSensor[2]<80
-        # rightRoadSensor = rightCloseSensor[1]<50 or rightCloseSensor[2]<80
-        # centerRoadSensor = centerCloseSensor[1]<50 or centerCloseSensor[2]<80
-        # leftFarRoadSensor = leftFarSensor[1]<50 or leftFarSensor[2]<100
-        # rightFarRoadSensor = rightFarSensor[1]<50 or rightFarSensor[2]<100
-        # centerFarRoadSensor = centerFarSensor[1]<50 or centerFarSensor[2]<100
-        # # check grass
-        # leftGrassSensor = leftCloseSensor[0]<80 and leftCloseSensor[0]>45 and leftCloseSensor[1]>70 and leftCloseSensor[2]>70
-        # rightGrassSensor = rightCloseSensor[0]<80 and rightCloseSensor[0]>45 and rightCloseSensor[1]>70 and rightCloseSensor[2]>70
-        # centerGrassSensor = centerCloseSensor[0]<80 and centerCloseSensor[0]>45 and centerCloseSensor[1]>70 and centerCloseSensor[2]>70
-        # leftFarGrassSensor = leftFarSensor[0]<80 and leftFarSensor[0]>45 and leftFarSensor[1]>70 and leftFarSensor[2]>70
-        # rightFarGrassSensor = rightFarSensor[0]<80 and rightFarSensor[0]>45 and rightFarSensor[1]>70 and rightFarSensor[2]>70
-        # centerFarGrassSensor = centerFarSensor[0]<80 and centerFarSensor[0]>45 and centerFarSensor[1]>70 and centerFarSensor[2]>70
+
 
         #check if its road
         leftRoadSensor = np.linalg.norm(leftCloseSensor-road)<50
         rightRoadSensor = np.linalg.norm(rightCloseSensor-road)<50
         centerRoadSensor = np.linalg.norm(centerCloseSensor-road)<50
-        leftFarRoadSensor = np.linalg.norm(leftFarSensor-road)<100
-        rightFarRoadSensor = np.linalg.norm(rightFarSensor-road)<100
-        centerFarRoadSensor = np.linalg.norm(centerFarSensor-road)<100
+        leftFarRoadSensor = np.linalg.norm(leftFarSensor-road)<50
+        rightFarRoadSensor = np.linalg.norm(rightFarSensor-road)<50
+        centerFarRoadSensor = np.linalg.norm(centerFarSensor-road)<50
 
-        #grass sense
-
+        print(leftFarRoadSensor,centerFarRoadSensor,rightFarRoadSensor)
         print(leftRoadSensor,centerRoadSensor,rightRoadSensor)
 
-        # photovorey detection
-        # if centerRoadSensor:
-        #     leftMotor=20
-        #     rightMotor=20
-
-        # if not rightFarRoadSensor:
-        #     leftMotor=10
-        #     rightMotor=30
-        #     print("left slow")
-        # elif not leftFarRoadSensor:
-        #     leftMotor=30
-        #     rightMotor=10
-        #     print("right slow")
-
-        # if centerRoadSensor and centerFarRoadSensor:
-        #     leftMotor=50
-        #     rightMotor=50
-
-        
-        # if not rightRoadSensor:
-        #     leftMotor=-20
-        #     rightMotor=20
-        # elif not leftRoadSensor:
-        #     leftMotor=20
-        #     rightMotor=-20
-        
-        # if centerGrassSensor:
-        #     leftMotor=-20
-        #     rightMotor=-20
-
-        # if leftGrassSensor or leftFarGrassSensor:
-        #     print("grass")
-
-        
-
-
-
-        # if not leftRoadSensor and (not rightRoadSensor):
-        #     if centerRoadSensor:
-        #         self.generalStack.append("slow forward")
-        # else:
-        #     if leftRoadSensor and rightRoadSensor and centerRoadSensor:
-        #         self.generalStack.append("floor it")
-        #     else:
-        #         if (leftRoadSensor or rightGrassSensor):
-        #             self.generalStack.append("turn left") 
-        #         elif (rightRoadSensor or leftGrassSensor):
-        #             self.generalStack.append("turn right")
-
-                    
-
-        # # basic control
-        # if "turn right" in self.generalStack:
-        #     leftMotor = 20
-        #     rightMotor = 0
-        # elif "turn left" in self.generalStack:
-        #     leftMotor = 0
-        #     rightMotor = 20
-        # elif "slow forward" in self.generalStack:
-        #     leftMotor=10
-        #     rightMotor=10
-        # elif "floor it" in self.generalStack:
-        #     leftMotor = 50
-        #     rightMotor = 50
-        # elif "turn around" in self.generalStack:
-        #     leftMotor = 5
-        #     rightMotor = -5
-
-
-
-            
-        
-        
-
-
-        #am i on the track?
-        # if ("dont know where i am" in self.contextStack):
-        #     if(leftFarGrassSensor or rightFarGrassSensor or centerFarGrassSensor):
-        #         self.contextStack.remove("dont know where i am")
-        #         self.contextStack.append("grass track in front")
-        #     else:
-        #         self.generalStack.append("revolve")
-
-
-        if ("revolve" in self.generalStack):
+        # basic control
+        if centerRoadSensor:
+            leftMotor=20
+            rightMotor=20
+            if centerRoadSensor and centerFarRoadSensor and leftRoadSensor and rightRoadSensor:
+                leftMotor=70
+                rightMotor=70
+            if leftRoadSensor and not rightRoadSensor:
+                leftMotor = 0
+                rightMotor = 20
+            if rightRoadSensor and not leftRoadSensor:
+                leftMotor = 20
+                rightMotor = 0 
+        else:
             leftMotor = -10
             rightMotor = 10
-
+                
 
 
         #debugs. override wheels for debugging
