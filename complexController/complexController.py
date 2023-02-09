@@ -87,20 +87,20 @@ class Controller:
         # basic control
         if "turn right" in self.generalStack:
             leftMotor = 40
-            rightMotor = 20
+            rightMotor = 0
         
         elif "turn left" in self.generalStack:
-            leftMotor = 20
+            leftMotor = 0
             rightMotor = 40
 
 
         #am i on the track?
-        if ("dont know where i am" in self.contextStack):
-            if(leftFarGrassSensor or rightFarGrassSensor or centerFarGrassSensor):
-                self.contextStack.remove("dont know where i am")
-                self.contextStack.append("grass track in front")
-            else:
-                self.generalStack.append("revolve")
+        # if ("dont know where i am" in self.contextStack):
+        #     if(leftFarGrassSensor or rightFarGrassSensor or centerFarGrassSensor):
+        #         self.contextStack.remove("dont know where i am")
+        #         self.contextStack.append("grass track in front")
+        #     else:
+        #         self.generalStack.append("revolve")
 
 
         if ("revolve" in self.generalStack):
