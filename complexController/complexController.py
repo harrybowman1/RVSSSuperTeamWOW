@@ -73,16 +73,17 @@ class Controller:
         centerFarGrassSensor = centerFarSensor[0]<80 and centerFarSensor[0]>45 and centerFarSensor[1]>70 and centerFarSensor[2]>70
 
         # photovorey detection
-        if not leftRoadSensor and not rightRoadSensor:
+        if not leftRoadSensor and (not rightRoadSensor):
             self.generalStack.append("turn around")
         else:
             if leftRoadSensor and rightRoadSensor and centerRoadSensor:
                 self.generalStack.append("floor it")
             else:
-                if leftRoadSensor or not rightRoadSensor or rightGrassSensor or leftFarRoadSensor:
+                if (leftRoadSensor):
                     self.generalStack.append("turn left")
-                if rightRoadSensor or not leftRoadSensor or leftGrassSensor or rightFarRoadSensor:
+                if (rightRoadSensor):
                     self.generalStack.append("turn right")
+
                     
 
         # basic control
@@ -96,6 +97,10 @@ class Controller:
         elif "turn left" in self.generalStack:
             leftMotor = 0
             rightMotor = 40
+        elif "floor it" in self.generalStack:
+            leftMotor = 20
+            rightMotor = 20
+
 
 
             
