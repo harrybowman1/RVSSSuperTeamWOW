@@ -84,6 +84,10 @@ class Controller:
             if rightRoadSensor or leftGrassSensor or leftFarGrassSensor:
                 leftMotor=20
                 rightMotor=0
+        
+        if centerGrassSensor:
+            leftMotor=-20
+            rightMotor=-20
 
         
 
