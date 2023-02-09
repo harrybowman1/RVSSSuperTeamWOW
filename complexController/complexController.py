@@ -73,36 +73,52 @@ class Controller:
         centerFarGrassSensor = centerFarSensor[0]<80 and centerFarSensor[0]>45 and centerFarSensor[1]>70 and centerFarSensor[2]>70
 
         # photovorey detection
-        if not leftRoadSensor and (not rightRoadSensor):
-            if centerRoadSensor:
-                self.generalStack.append("slow forward")
-        else:
-            if leftRoadSensor and rightRoadSensor and centerRoadSensor:
-                self.generalStack.append("floor it")
-            else:
-                if (leftRoadSensor or rightGrassSensor):
-                    self.generalStack.append("turn left")
-                elif (rightRoadSensor or leftGrassSensor):
-                    self.generalStack.append("turn right")
+        if centerRoadSensor:
+            leftMotor=20
+            rightMotor=20
+        
+        if not leftRoadSensor:
+            leftMotor=20
+            rightMotor=0
+        
+        if not rightRoadSensor:
+            leftMotor=0
+            rightMotor=20
+
+        
+
+
+
+        # if not leftRoadSensor and (not rightRoadSensor):
+        #     if centerRoadSensor:
+        #         self.generalStack.append("slow forward")
+        # else:
+        #     if leftRoadSensor and rightRoadSensor and centerRoadSensor:
+        #         self.generalStack.append("floor it")
+        #     else:
+        #         if (leftRoadSensor or rightGrassSensor):
+        #             self.generalStack.append("turn left") 
+        #         elif (rightRoadSensor or leftGrassSensor):
+        #             self.generalStack.append("turn right")
 
                     
 
-        # basic control
-        if "turn right" in self.generalStack:
-            leftMotor = 20
-            rightMotor = 0
-        elif "turn left" in self.generalStack:
-            leftMotor = 0
-            rightMotor = 20
-        elif "slow forward" in self.generalStack:
-            leftMotor=10
-            rightMotor=10
-        elif "floor it" in self.generalStack:
-            leftMotor = 50
-            rightMotor = 50
-        elif "turn around" in self.generalStack:
-            leftMotor = 5
-            rightMotor = -5
+        # # basic control
+        # if "turn right" in self.generalStack:
+        #     leftMotor = 20
+        #     rightMotor = 0
+        # elif "turn left" in self.generalStack:
+        #     leftMotor = 0
+        #     rightMotor = 20
+        # elif "slow forward" in self.generalStack:
+        #     leftMotor=10
+        #     rightMotor=10
+        # elif "floor it" in self.generalStack:
+        #     leftMotor = 50
+        #     rightMotor = 50
+        # elif "turn around" in self.generalStack:
+        #     leftMotor = 5
+        #     rightMotor = -5
 
 
 
