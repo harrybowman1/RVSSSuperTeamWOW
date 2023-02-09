@@ -72,15 +72,6 @@ class Controller:
         if centerRoadSensor:
             leftMotor=20
             rightMotor=20
-            if centerRoadSensor and centerFarRoadSensor and leftRoadSensor and rightRoadSensor:
-                leftMotor=50
-                rightMotor=50
-            if leftRoadSensor and not rightRoadSensor:
-                leftMotor = 0
-                rightMotor = 20
-            if rightRoadSensor and not leftRoadSensor:
-                leftMotor = 20
-                rightMotor = 0 
         else:
             leftMotor = -10
             rightMotor = 10
