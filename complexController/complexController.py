@@ -41,9 +41,10 @@ class Controller:
         # cv2.imwrite("data/"+str(self.time).zfill(6)+".jpg", inputImage) 
         self.time+=1
         image = cv2.resize(inputImage,(32,32))
-        image = cv2.cvtColor(image,cv2.COLOR_BGR2HSV)
+        # image = cv2.cvtColor(image,cv2.COLOR_BGR2HSV)
         leftMotor = 0
         rightMotor = 0
+        road = np.array([100,100,100])
 
         #maintain stacks. empty general stack
         self.generalStack = []
@@ -57,40 +58,45 @@ class Controller:
         rightFarSensor = np.average(image[10:13,26:29],(0,1))
         centerFarSensor = np.average(image[10:13,15:18],(0,1))
 
+        # #check if its road
+        # leftRoadSensor = leftCloseSensor[1]<50 or leftCloseSensor[2]<80
+        # rightRoadSensor = rightCloseSensor[1]<50 or rightCloseSensor[2]<80
+        # centerRoadSensor = centerCloseSensor[1]<50 or centerCloseSensor[2]<80
+        # leftFarRoadSensor = leftFarSensor[1]<50 or leftFarSensor[2]<100
+        # rightFarRoadSensor = rightFarSensor[1]<50 or rightFarSensor[2]<100
+        # centerFarRoadSensor = centerFarSensor[1]<50 or centerFarSensor[2]<100
+        # # check grass
+        # leftGrassSensor = leftCloseSensor[0]<80 and leftCloseSensor[0]>45 and leftCloseSensor[1]>70 and leftCloseSensor[2]>70
+        # rightGrassSensor = rightCloseSensor[0]<80 and rightCloseSensor[0]>45 and rightCloseSensor[1]>70 and rightCloseSensor[2]>70
+        # centerGrassSensor = centerCloseSensor[0]<80 and centerCloseSensor[0]>45 and centerCloseSensor[1]>70 and centerCloseSensor[2]>70
+        # leftFarGrassSensor = leftFarSensor[0]<80 and leftFarSensor[0]>45 and leftFarSensor[1]>70 and leftFarSensor[2]>70
+        # rightFarGrassSensor = rightFarSensor[0]<80 and rightFarSensor[0]>45 and rightFarSensor[1]>70 and rightFarSensor[2]>70
+        # centerFarGrassSensor = centerFarSensor[0]<80 and centerFarSensor[0]>45 and centerFarSensor[1]>70 and centerFarSensor[2]>70
+
         #check if its road
-        leftRoadSensor = leftCloseSensor[1]<50 or leftCloseSensor[2]<80
-        rightRoadSensor = rightCloseSensor[1]<50 or rightCloseSensor[2]<80
-        centerRoadSensor = centerCloseSensor[1]<50 or centerCloseSensor[2]<80
-        leftFarRoadSensor = leftFarSensor[1]<50 or leftFarSensor[2]<100
-        rightFarRoadSensor = rightFarSensor[1]<50 or rightFarSensor[2]<100
-        centerFarRoadSensor = centerFarSensor[1]<50 or centerFarSensor[2]<100
-        # check grass
-        leftGrassSensor = leftCloseSensor[0]<80 and leftCloseSensor[0]>45 and leftCloseSensor[1]>70 and leftCloseSensor[2]>70
-        rightGrassSensor = rightCloseSensor[0]<80 and rightCloseSensor[0]>45 and rightCloseSensor[1]>70 and rightCloseSensor[2]>70
-        centerGrassSensor = centerCloseSensor[0]<80 and centerCloseSensor[0]>45 and centerCloseSensor[1]>70 and centerCloseSensor[2]>70
-        leftFarGrassSensor = leftFarSensor[0]<80 and leftFarSensor[0]>45 and leftFarSensor[1]>70 and leftFarSensor[2]>70
-        rightFarGrassSensor = rightFarSensor[0]<80 and rightFarSensor[0]>45 and rightFarSensor[1]>70 and rightFarSensor[2]>70
-        centerFarGrassSensor = centerFarSensor[0]<80 and centerFarSensor[0]>45 and centerFarSensor[1]>70 and centerFarSensor[2]>70
+        leftRoadSensor = np.linalg.norm(leftCloseSensor-road)<50
+        rightRoadSensor = np.linalg.norm(rightCloseSensor-road)<50
+        centerRoadSensor = np.linalg.norm(centerCloseSensor-road)<50
 
         # photovorey detection
         if centerRoadSensor:
             leftMotor=40
             rightMotor=40
         
-        if rightGrassSensor or rightFarGrassSensor:
+        if not rightRoadSensor:
             leftMotor=-20
             rightMotor=20
         
-        if leftGrassSensor or leftFarGrassSensor:
+        if not leftRoadSensor:
             leftMotor=20
             rightMotor=-20
         
-        if centerGrassSensor:
-            leftMotor=-20
-            rightMotor=-20
+        # if centerGrassSensor:
+        #     leftMotor=-20
+        #     rightMotor=-20
 
-        if leftGrassSensor or leftFarGrassSensor:
-            print("grass")
+        # if leftGrassSensor or leftFarGrassSensor:
+        #     print("grass")
 
         
 
