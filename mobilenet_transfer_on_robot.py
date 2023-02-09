@@ -4,8 +4,6 @@ import sys
 sys.path.append("..")
 import penguinPi as ppi
 import pygame
-
-
 import torch
 from torchvision.models import mobilenet_v3_small, MobileNet_V3_Small_Weights
 

@@ -2,3 +2,7 @@
 *.png
 .csv
 .DS_Store
+class_params.pt
+/data*/
+/.vscode/
+delete_me.ipynb
