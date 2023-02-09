@@ -83,23 +83,25 @@ class Controller:
 
         #grass sense
 
+        print(leftRoadSensor,centerRoadSensor,rightRoadSensor)
+
         # photovorey detection
-        if centerRoadSensor:
-            leftMotor=20
-            rightMotor=20
+        # if centerRoadSensor:
+        #     leftMotor=20
+        #     rightMotor=20
 
-        if not rightFarRoadSensor:
-            leftMotor=10
-            rightMotor=30
-            print("left slow")
-        elif not leftFarRoadSensor:
-            leftMotor=30
-            rightMotor=10
-            print("right slow")
+        # if not rightFarRoadSensor:
+        #     leftMotor=10
+        #     rightMotor=30
+        #     print("left slow")
+        # elif not leftFarRoadSensor:
+        #     leftMotor=30
+        #     rightMotor=10
+        #     print("right slow")
 
-        if centerRoadSensor and centerFarRoadSensor:
-            leftMotor=50
-            rightMotor=50
+        # if centerRoadSensor and centerFarRoadSensor:
+        #     leftMotor=50
+        #     rightMotor=50
 
         
         # if not rightRoadSensor:
