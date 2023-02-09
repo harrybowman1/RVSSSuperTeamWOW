@@ -58,9 +58,9 @@ class Controller:
         centerFarSensor = np.average(image[10:13,15:18],(0,1))
 
         # small squares on left and right side. average and check if its road
-        leftRoadSensor = leftCloseSensor[1]<50 or leftCloseSensor[2]<150
-        rightRoadSensor = rightCloseSensor[1]<50 or rightCloseSensor[2]<150
-        centerRoadSensor = centerCloseSensor[1]<50 or centerCloseSensor[2]<150
+        leftRoadSensor = leftCloseSensor[1]<50 or leftCloseSensor[2]<100
+        rightRoadSensor = rightCloseSensor[1]<50 or rightCloseSensor[2]<100
+        centerRoadSensor = centerCloseSensor[1]<50 or centerCloseSensor[2]<100
         # check grass
         leftGrassSensor = leftCloseSensor[0]<80 and leftCloseSensor[0]>45 and leftCloseSensor[1]>70 and leftCloseSensor[2]>70
         rightGrassSensor = rightCloseSensor[0]<80 and rightCloseSensor[0]>45 and rightCloseSensor[1]>70 and rightCloseSensor[2]>70
