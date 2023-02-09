@@ -74,8 +74,8 @@ class Controller:
 
         # photovorey detection
         if centerRoadSensor and leftRoadSensor and rightRoadSensor:
-            leftMotor=20
-            rightMotor=20
+            leftMotor=40
+            rightMotor=40
         else:
             if leftRoadSensor or rightGrassSensor or rightFarGrassSensor:
                 leftMotor=0
