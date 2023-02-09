@@ -5,6 +5,7 @@ class Controller:
 
     def __init__(self):
         self.time = 0
+        self.timer1 = 0
         self.generalStack = []
         self.contextStack = ["dont know where i am"]
 
@@ -65,8 +66,8 @@ class Controller:
         rightFarRoadSensor = np.linalg.norm(rightFarSensor-road)<50
         centerFarRoadSensor = np.linalg.norm(centerFarSensor-road)<50
 
-        print(leftFarRoadSensor,centerFarRoadSensor,rightFarRoadSensor)
-        print(leftRoadSensor,centerRoadSensor,rightRoadSensor)
+        # print(leftFarRoadSensor,centerFarRoadSensor,rightFarRoadSensor)
+        # print(leftRoadSensor,centerRoadSensor,rightRoadSensor)
 
         # basic control
         if centerRoadSensor:
@@ -75,7 +76,17 @@ class Controller:
         else:
             leftMotor = -10
             rightMotor = 10
-                
+
+        # are we in right or left turn segment?
+        if not leftRoadSensor:
+            if not "lost road on left" in self.contextStack:
+                self.contextStack.append("lost road on left")
+            self.timer1+=1
+        if leftRoadSensor:
+            if "lost road on left" in self.contextStack:
+                self.contextStack.remove("lost road on left")
+            print(self.timer1)
+            self.timer1 = 0
 
 
         #debugs. override wheels for debugging
