@@ -76,7 +76,7 @@ class Controller:
         #check if its road
         leftRoadSensor = np.linalg.norm(leftCloseSensor-road)<50
         rightRoadSensor = np.linalg.norm(rightCloseSensor-road)<50
-        centerRoadSensor = np.linalg.norm(centerCloseSensor-road)<50
+        centerRoadSensor = np.linalg.norm(centerCloseSensor-road)<100
 
         # photovorey detection
         if centerRoadSensor:
