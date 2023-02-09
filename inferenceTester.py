@@ -41,6 +41,7 @@ OUTER_WHEEL = 35
 
 if __name__=="__main__":
     #~~~~~~~~~~~~ SET UP Game ~~~~~~~~~~~~~~
+    print("setting up")
     pygame.init()
     pygame.display.set_mode((300,300)) #size of pop-up window
     pygame.key.set_repeat(100) #holding a key sends continuous KEYDOWN events. Input argument is milli-seconds delay between events and controls the sensitivity
@@ -63,21 +64,23 @@ if __name__=="__main__":
     net.load_state_dict(torch.load('model'))
     net.eval()
 
-    #Consts for getting outputs
-    LEFT = 0
+    #Consts for getting outputs OPPOSITE from training
+    LEFT = 2
     STRAIGHT = 1
-    RIGHT = 2
+    RIGHT = 0
 
     #Speed consts
-    FANGIN = 20
-    INNER_TURN = 0
-    OUTER_TURN = 20
-    INNER_ADJ = 10
-    OUTER_ADJ = 15
-    STRAIGHT_ADJ = 15
+    scale = 1
+    FANGIN = 20*scale
+    INNER_TURN = 0 *scale
+    OUTER_TURN = 20 *scale
+    INNER_ADJ = 10 *scale
+    OUTER_ADJ = 15 *scale
+    STRAIGHT_ADJ = 15 *scale
 
     steerConf = 0
     steerTracker = 4
+    steerThresh = 3
     trackConf = 0
     trackTracker = 4
 
@@ -88,7 +91,7 @@ if __name__=="__main__":
             image = camera.frame
             #set controls
             steer, track = modelPredictSteerClass(image, net)
-
+            
             #Check confidence
             if trackTracker == track:
                 trackConf += 1
@@ -104,24 +107,31 @@ if __name__=="__main__":
             # steerAdd = trackConf 
             
             #If steer conf is high, change the steer
-            if steerConf > 5:
+            if steerConf > steerThresh:
+                print("CHANGE STEER")
                 #Cornering
                 if steer == LEFT and track == LEFT:
                     ppi.set_velocity(INNER_TURN, OUTER_TURN+steerConf) 
+                    print("turning left on left")
                 elif steer == RIGHT and track == RIGHT:
                     ppi.set_velocity(OUTER_TURN, INNER_TURN+steerConf) 
+                    print("turning right on right")
 
                 #Fanging
                 elif steer == STRAIGHT and track == STRAIGHT:
                     ppi.set_velocity(FANGIN+steerConf, FANGIN+steerConf) 
+                    print("FANGING")
 
                 #Adjusting
                 elif steer == LEFT and track != LEFT:
                     ppi.set_velocity(INNER_ADJ, OUTER_ADJ+steerConf) 
+                    print("Adjusting left")
                 elif steer == RIGHT and track != RIGHT:
                     ppi.set_velocity(OUTER_ADJ+steerConf, INNER_ADJ) 
+                    print("Adjusting right")
                 elif steer == STRAIGHT and track != STRAIGHT:
                     ppi.set_velocity(STRAIGHT_ADJ+steerConf, STRAIGHT_ADJ+steerConf) 
+                    print("adjusting straight")
                 else:
                     raise Exception ("Wrong combo of steer and track")
 
