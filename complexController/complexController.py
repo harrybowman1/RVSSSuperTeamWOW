@@ -85,7 +85,7 @@ class Controller:
         if leftRoadSensor:
             if "lost road on left" in self.contextStack:
                 self.contextStack.remove("lost road on left")
-            print(self.timer1)
+                print(self.timer1)
             self.timer1 = 0
 
 
