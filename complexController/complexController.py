@@ -93,7 +93,7 @@ class Controller:
                 print(self.timer1)
             self.timer1 = 0
 
-        if self.timer1>10:
+        if self.timer1>5:
             self.generalStack.append("turn right")
 
 
