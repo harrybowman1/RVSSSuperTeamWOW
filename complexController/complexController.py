@@ -64,7 +64,7 @@ class Controller:
         centerRoadSensor = np.linalg.norm(centerCloseSensor-road)<100
         leftFarRoadSensor = np.linalg.norm(leftFarSensor-road)<50
         rightFarRoadSensor = np.linalg.norm(rightFarSensor-road)<50
-        centerFarRoadSensor = np.linalg.norm(centerFarSensor-road)<50
+        centerFarRoadSensor = np.linalg.norm(centerFarSensor-road)<100
         leftGrassSensor = leftCloseSensor[1]>150
         rightGrassSensor = rightCloseSensor[1]>150
         centerGrassSensor = centerCloseSensor[1]>150
