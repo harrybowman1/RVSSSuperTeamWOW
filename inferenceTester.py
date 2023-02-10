@@ -90,7 +90,7 @@ if __name__=="__main__":
     steer_history = []
     track_history = []
 
-    left_perv, right_prev = (0, 0)
+    left_prev, right_prev = (0, 0)
 
     try:
         # MAIN LOOP
@@ -123,34 +123,62 @@ if __name__=="__main__":
             
             smoothed_steer, smoothed_steer_conf = smooth_command(steer_history)
             smoothed_track, _ = smooth_command(track_history)
-            
-            #If steer conf is high, change the steer
-            if smoothed_steer_conf > steerThresh:
+
+                        #If steer conf is high, change the steer
+            if steerConf > steerThresh:
                 #Cornering
-                if smoothed_steer == LEFT and smoothed_track == LEFT:
+                if steer == LEFT and track == LEFT:
                     left, right = INNER_TURN, OUTER_TURN
                     # print("turning left on left")
-                elif steer == RIGHT and smoothed_track == RIGHT:
+                elif steer == RIGHT and track == RIGHT:
                     left,right = OUTER_TURN, INNER_TURN
                     # print("turning right on right")
 
                 #Fanging
-                elif smoothed_steer == STRAIGHT and smoothed_track == STRAIGHT:
+                elif steer == STRAIGHT and track == STRAIGHT:
                     left,right = FANGIN, FANGIN 
                     # print("FANGING")
 
                 #Adjusting
-                elif smoothed_steer == LEFT and smoothed_track != LEFT:
+                elif steer == LEFT and track != LEFT:
                     left, right = INNER_ADJ, OUTER_ADJ 
                     # print("Adjusting left")
-                elif smoothed_steer == RIGHT and smoothed_track != RIGHT:
+                elif steer == RIGHT and track != RIGHT:
                     left, right = OUTER_ADJ, INNER_ADJ 
                     # print("Adjusting right")
-                elif smoothed_steer == STRAIGHT and smoothed_track != STRAIGHT:
+                elif steer == STRAIGHT and track != STRAIGHT:
                     left, right = STRAIGHT_ADJ, STRAIGHT_ADJ 
                     # print("adjusting straight")
                 else:
                     raise Exception ("Wrong combo of steer and track")
+            
+            # #If steer conf is high, change the steer
+            # if smoothed_steer_conf > steerThresh:
+            #     #Cornering
+            #     if smoothed_steer == LEFT and smoothed_track == LEFT:
+            #         left, right = INNER_TURN, OUTER_TURN
+            #         # print("turning left on left")
+            #     elif steer == RIGHT and smoothed_track == RIGHT:
+            #         left,right = OUTER_TURN, INNER_TURN
+            #         # print("turning right on right")
+
+            #     #Fanging
+            #     elif smoothed_steer == STRAIGHT and smoothed_track == STRAIGHT:
+            #         left,right = FANGIN, FANGIN 
+            #         # print("FANGING")
+
+            #     #Adjusting
+            #     elif smoothed_steer == LEFT and smoothed_track != LEFT:
+            #         left, right = INNER_ADJ, OUTER_ADJ 
+            #         # print("Adjusting left")
+            #     elif smoothed_steer == RIGHT and smoothed_track != RIGHT:
+            #         left, right = OUTER_ADJ, INNER_ADJ 
+            #         # print("Adjusting right")
+            #     elif smoothed_steer == STRAIGHT and smoothed_track != STRAIGHT:
+            #         left, right = STRAIGHT_ADJ, STRAIGHT_ADJ 
+            #         # print("adjusting straight")
+            #     else:
+            #         raise Exception ("Wrong combo of steer and track")
 
                 #Printing for debugging
                 if steer == LEFT:
