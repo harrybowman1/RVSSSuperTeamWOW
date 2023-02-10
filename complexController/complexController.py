@@ -56,7 +56,7 @@ class Controller:
         centerCloseSensor = np.average(image[25:29,15:18],(0,1))
         leftEdgeSensor = np.average(image[15:18,0:4],(0,1))
         rightEdgeSensor = np.average(image[15:18,28:],(0,1))
-        centerFarSensor = np.average(image[10:13,15:18],(0,1))
+        centerSensor = np.average(image[15:18,15:18],(0,1))
 
 
 
@@ -66,9 +66,9 @@ class Controller:
         centerRoadSensor = np.linalg.norm(centerCloseSensor-road)<70
         leftEdgeRoad = np.linalg.norm(leftEdgeSensor-road)<70
         rightEdgeRoad = np.linalg.norm(rightEdgeSensor-road)<70
-        centerFarRoadSensor = np.linalg.norm(centerFarSensor-road)<70
+        centerFarRoadSensor = np.linalg.norm(centerSensor-road)<70
         leftGrassSensor = np.linalg.norm(leftCloseSensor-grass)<100
-        rightGrassSensor = np.linalg.norm(rightCloseSensor-grass)<100
+        middleGrassSensor = np.linalg.norm(centerSensor-grass)<50
         centerGrassSensor = np.linalg.norm(centerCloseSensor-grass)<50
         centerGlareSensor = np.linalg.norm(centerCloseSensor-glare)<50
 
@@ -77,7 +77,7 @@ class Controller:
         # print(leftGrassSensor,centerGrassSensor,rightGrassSensor)
 
         # basic control
-        if centerRoadSensor:
+        if centerRoadSensor and not middleGrassSensor:
             leftMotor=20
             rightMotor=20
             if not leftEdgeRoad:
