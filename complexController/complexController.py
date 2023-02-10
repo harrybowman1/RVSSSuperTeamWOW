@@ -51,25 +51,25 @@ class Controller:
 
 
         #define square sensors
-        leftCloseSensor = np.average(image[25:29,4:7],(0,1))
-        rightCloseSensor = np.average(image[25:29,26:29],(0,1))
-        centerCloseSensor = np.average(image[25:29,15:18],(0,1))
+        leftCloseSensor = np.average(image[23:29,4:7],(0,1))
+        rightCloseSensor = np.average(image[23:29,26:29],(0,1))
+        centerCloseSensor = np.average(image[23:29,15:18],(0,1))
         leftEdgeSensor = np.average(image[15:18,0:4],(0,1))
         rightEdgeSensor = np.average(image[15:18,28:],(0,1))
-        centerFarSensor = np.average(image[10:13,15:18],(0,1))
+        centerSensor = np.average(image[15:18,15:18],(0,1))
 
 
 
-        #check if its road
+        #check sensors
         leftRoadSensor = np.linalg.norm(leftCloseSensor-road)<70
         rightRoadSensor = np.linalg.norm(rightCloseSensor-road)<70
         centerRoadSensor = np.linalg.norm(centerCloseSensor-road)<70
         leftEdgeRoad = np.linalg.norm(leftEdgeSensor-road)<70
         rightEdgeRoad = np.linalg.norm(rightEdgeSensor-road)<70
-        centerFarRoadSensor = np.linalg.norm(centerFarSensor-road)<70
+        centerFarRoadSensor = np.linalg.norm(centerSensor-road)<70
         leftGrassSensor = np.linalg.norm(leftCloseSensor-grass)<100
-        rightGrassSensor = np.linalg.norm(rightCloseSensor-grass)<100
-        centerGrassSensor = np.linalg.norm(centerCloseSensor-grass)<100
+        middleGrassSensor = np.linalg.norm(centerSensor-grass)<50
+        centerGrassSensor = np.linalg.norm(centerCloseSensor-grass)<50
         centerGlareSensor = np.linalg.norm(centerCloseSensor-glare)<50
 
         # print(leftFarRoadSensor,centerFarRoadSensor,rightFarRoadSensor)
@@ -77,9 +77,17 @@ class Controller:
         # print(leftGrassSensor,centerGrassSensor,rightGrassSensor)
 
         # basic control
-        if centerRoadSensor:
-            leftMotor=20
-            rightMotor=20
+        if centerRoadSensor and (not middleGrassSensor):
+            leftMotor=40
+            rightMotor=40
+            if not leftEdgeRoad:
+                rightMotor-=10
+            if not rightEdgeRoad:
+                leftMotor-=10
+        elif centerRoadSensor and middleGrassSensor:
+            leftMotor=10
+            rightMotor=10
+
         else:
             if leftEdgeRoad:
                 leftMotor = -10
@@ -89,46 +97,29 @@ class Controller:
                 rightMotor = -10
             if centerGlareSensor:
                 leftMotor=10
-                rightMotor=0
+                rightMotor=10
 
-
+        if centerGrassSensor:
+            leftMotor=-10
+            rightMotor=-10
 
 
         if (leftRoadSensor or centerRoadSensor) and not rightRoadSensor:
-            leftMotor = -10
+            leftMotor = -20
             rightMotor = 20
         
         if (rightRoadSensor or centerRoadSensor) and not leftRoadSensor:
             leftMotor = 20
-            rightMotor = -10
+            rightMotor = -20
 
         if (not centerRoadSensor and not leftRoadSensor and not rightRoadSensor):
-            if self.time%120>60:
+            if self.time%240>120:
                 leftMotor = 10
                 rightMotor = -10
             else:
                 leftMotor = -10
                 rightMotor = 10
 
-
-        # if "turn right" in self.generalStack:
-        #     leftMotor = 10
-        #     rightMotor = -10
-
-
-        # are we in right or left turn segment?
-        # if not leftRoadSensor:
-        #     if not "lost road on left" in self.contextStack:
-        #         self.contextStack.append("lost road on left")
-        #     self.timer1+=1
-        # if leftRoadSensor:
-        #     if "lost road on left" in self.contextStack:
-        #         self.contextStack.remove("lost road on left")
-        #         print(self.timer1)
-        #     self.timer1 = 0
-
-        # if self.timer1>5:
-        #     self.generalStack.append("turn right")
 
 
         #debugs. override wheels for debugging
