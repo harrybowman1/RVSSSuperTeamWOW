@@ -70,7 +70,8 @@ class Controller:
         centerGrassSensor = centerCloseSensor[1]>150
 
         # print(leftFarRoadSensor,centerFarRoadSensor,rightFarRoadSensor)
-        print(leftRoadSensor,centerRoadSensor,rightRoadSensor)
+        # print(leftRoadSensor,centerRoadSensor,rightRoadSensor)
+        print(leftGrassSensor,centerGrassSensor,rightGrassSensor)
 
         # basic control
         if centerRoadSensor:
