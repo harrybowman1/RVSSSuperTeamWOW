@@ -77,7 +77,7 @@ class Controller:
         # print(leftGrassSensor,centerGrassSensor,rightGrassSensor)
 
         # basic control
-        if centerRoadSensor and not middleGrassSensor:
+        if centerRoadSensor and (not middleGrassSensor or (leftRoadSensor and rightRoadSensor)):
             leftMotor=20
             rightMotor=20
             if not leftEdgeRoad:
