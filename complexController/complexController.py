@@ -77,13 +77,16 @@ class Controller:
         # print(leftGrassSensor,centerGrassSensor,rightGrassSensor)
 
         # basic control
-        if centerRoadSensor and (not middleGrassSensor or (leftRoadSensor and rightRoadSensor)):
+        if centerRoadSensor and (not middleGrassSensor):
             leftMotor=40
             rightMotor=40
             if not leftEdgeRoad:
                 rightMotor-=10
             if not rightEdgeRoad:
                 leftMotor-=10
+        elif centerRoadSensor and middleGrassSensor:
+            leftMotor=10
+            rightMotor=10
 
         else:
             if leftEdgeRoad:
