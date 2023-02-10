@@ -70,13 +70,13 @@ if __name__=="__main__":
     RIGHT = 0
 
     #Speed consts
-    scale = 1
-    FANGIN = 20*scale
-    INNER_TURN = 0 *scale
-    OUTER_TURN = 20 *scale
-    INNER_ADJ = 10 *scale
-    OUTER_ADJ = 15 *scale
-    STRAIGHT_ADJ = 15 *scale
+    scale = 0.2
+    FANGIN = int(20*scale)
+    INNER_TURN = int(0 *scale)
+    OUTER_TURN = int(20 *scale)
+    INNER_ADJ = int(10 *scale)
+    OUTER_ADJ = int(15 *scale)
+    STRAIGHT_ADJ = int(15 *scale)
 
     steerConf = 0
     steerTracker = 4
@@ -86,6 +86,8 @@ if __name__=="__main__":
 
     try:
         # MAIN LOOP
+        steerVals = []
+        trackVals = []
         while True:
             #get image
             image = camera.frame
@@ -108,32 +110,52 @@ if __name__=="__main__":
             
             #If steer conf is high, change the steer
             if steerConf > steerThresh:
-                print("CHANGE STEER")
+                # steerVals.append(steer)
+                # trackVals.append(track)
                 #Cornering
                 if steer == LEFT and track == LEFT:
-                    ppi.set_velocity(INNER_TURN, OUTER_TURN+steerConf) 
-                    print("turning left on left")
+                    left, right = INNER_TURN, OUTER_TURN
+                    # print("turning left on left")
                 elif steer == RIGHT and track == RIGHT:
-                    ppi.set_velocity(OUTER_TURN, INNER_TURN+steerConf) 
-                    print("turning right on right")
+                    left,right = OUTER_TURN, INNER_TURN
+                    # print("turning right on right")
 
                 #Fanging
                 elif steer == STRAIGHT and track == STRAIGHT:
-                    ppi.set_velocity(FANGIN+steerConf, FANGIN+steerConf) 
-                    print("FANGING")
+                    left,right = FANGIN, FANGIN 
+                    # print("FANGING")
 
                 #Adjusting
                 elif steer == LEFT and track != LEFT:
-                    ppi.set_velocity(INNER_ADJ, OUTER_ADJ+steerConf) 
-                    print("Adjusting left")
+                    left, right = INNER_ADJ, OUTER_ADJ 
+                    # print("Adjusting left")
                 elif steer == RIGHT and track != RIGHT:
-                    ppi.set_velocity(OUTER_ADJ+steerConf, INNER_ADJ) 
-                    print("Adjusting right")
+                    left, right = OUTER_ADJ, INNER_ADJ 
+                    # print("Adjusting right")
                 elif steer == STRAIGHT and track != STRAIGHT:
-                    ppi.set_velocity(STRAIGHT_ADJ+steerConf, STRAIGHT_ADJ+steerConf) 
-                    print("adjusting straight")
+                    left, right = STRAIGHT_ADJ, STRAIGHT_ADJ 
+                    # print("adjusting straight")
                 else:
                     raise Exception ("Wrong combo of steer and track")
+
+                if steer == LEFT:
+                    steerWord = "LEFT"
+                elif steer == RIGHT:
+                    steerWord = "RIGHT"
+                elif steer == STRAIGHT:
+                    steerWord = "STRAIGHT"
+
+                if track == LEFT:
+                    trackWord = "LEFT"
+                elif track == RIGHT:
+                    trackWord = "RIGHT"
+                elif track == STRAIGHT:
+                    trackWord = "STRAIGHT"
+                print("Steer: "+ steerWord, "\t Track: ", trackWord)
+                print(left, right)
+                ppi.set_velocity(left, right)
+            
+
 
 
             # SPACE for shutdown 
