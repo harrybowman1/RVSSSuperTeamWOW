@@ -71,8 +71,8 @@ class Controller:
         centerGrassSensor = np.linalg.norm(centerCloseSensor-grass)<100
 
         # print(leftFarRoadSensor,centerFarRoadSensor,rightFarRoadSensor)
-        # print(leftRoadSensor,centerRoadSensor,rightRoadSensor)
-        print(leftGrassSensor,centerGrassSensor,rightGrassSensor)
+        print(leftRoadSensor,centerRoadSensor,rightRoadSensor)
+        # print(leftGrassSensor,centerGrassSensor,rightGrassSensor)
 
         # basic control
         if centerRoadSensor:
@@ -93,7 +93,7 @@ class Controller:
             rightMotor = -10
 
         if (not centerRoadSensor and not leftRoadSensor and not rightRoadSensor):
-            if self.time%30>5:
+            if self.time%60>30:
                 leftMotor = 10
                 rightMotor = -10
             else:

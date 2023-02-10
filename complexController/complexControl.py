@@ -43,6 +43,8 @@ if __name__=="__main__":
             # SPACE for shutdown 
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_UP:
+                        cv2.imwrite("data/testimg.jpg", image)            
                     if event.key == pygame.K_SPACE:
                         print("stop")                    
                         ppi.set_velocity(0,0)
