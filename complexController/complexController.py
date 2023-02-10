@@ -78,8 +78,8 @@ class Controller:
 
         # basic control
         if centerRoadSensor and (not middleGrassSensor):
-            leftMotor=60
-            rightMotor=60
+            leftMotor=40
+            rightMotor=40
             if not leftEdgeRoad:
                 rightMotor-=10
             if not rightEdgeRoad:
