@@ -82,6 +82,15 @@ class Controller:
             leftMotor = 20
             rightMotor = -10
 
+        if (not centerRoadSensor and not leftRoadSensor and not rightRoadSensor):
+            if self.time%10>5:
+                leftMotor = 10
+                rightMotor = -10
+            else:
+                leftMotor = -10
+                rightMotor = 10
+
+
         # if "turn right" in self.generalStack:
         #     leftMotor = 10
         #     rightMotor = -10
