@@ -51,9 +51,9 @@ class Controller:
 
 
         #define square sensors
-        leftCloseSensor = np.average(image[25:29,4:7],(0,1))
-        rightCloseSensor = np.average(image[25:29,26:29],(0,1))
-        centerCloseSensor = np.average(image[25:29,15:18],(0,1))
+        leftCloseSensor = np.average(image[23:29,4:7],(0,1))
+        rightCloseSensor = np.average(image[23:29,26:29],(0,1))
+        centerCloseSensor = np.average(image[23:29,15:18],(0,1))
         leftEdgeSensor = np.average(image[15:18,0:4],(0,1))
         rightEdgeSensor = np.average(image[15:18,28:],(0,1))
         centerSensor = np.average(image[15:18,15:18],(0,1))
