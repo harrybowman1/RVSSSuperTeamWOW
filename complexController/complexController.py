@@ -96,6 +96,10 @@ class Controller:
                 leftMotor=10
                 rightMotor=10
 
+        if centerGrassSensor:
+            leftMotor=-10
+            rightMotor=-10
+
 
 
 
