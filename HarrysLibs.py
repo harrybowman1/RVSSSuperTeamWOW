@@ -97,16 +97,18 @@ def modelPredictSteerClass(img, net):
     "Takes in the image and returns the driving command using a trained network"
     im = np.moveaxis(img,2,0)
     cropIm = img[40:,:,:]
+    print("imNp = ", cropIm.shape)
 
     transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
     imgTensor = transform(cropIm)
+    print("tensor: ",cropIm.shape)
     #Get the image as a tensor and downsize it
     # imgTensor = torch.from_numpy(im)
     # imgTensor = imgTensor.unsqueeze(0)
     # print(imgTensor)
 
-    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
-    inputs = TF.resize(imgTensor, [32,32])
+    inputs = TF.resize(imgTensor, [32,32]).unsqueeze(0)
+    print(inputs.shape)
     
     # print(type(inputs))
     inputs = inputs.type(torch.float32)
