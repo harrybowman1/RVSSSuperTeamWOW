@@ -42,11 +42,16 @@ if __name__=="__main__":
             # print(outs)
             # SPACE for shutdown 
             for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:
+                if event.type == pygame.KEYDOWN:            
                     if event.key == pygame.K_SPACE:
                         print("stop")                    
                         ppi.set_velocity(0,0)
                         raise KeyboardInterrupt
+                        quit()
+                    if event.key == pygame.K_UP:
+                        cv2.imwrite("data/testimg.jpg", image)
+                        ppi.set_velocity(0,0)
+                        quit()
     #stops motors on shutdown
     except KeyboardInterrupt:
         ppi.set_velocity(0,0)
