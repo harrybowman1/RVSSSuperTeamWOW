@@ -67,7 +67,7 @@ class Controller:
         centerFarRoadSensor = np.linalg.norm(centerFarSensor-road)<50
 
         # print(leftFarRoadSensor,centerFarRoadSensor,rightFarRoadSensor)
-        # print(leftRoadSensor,centerRoadSensor,rightRoadSensor)
+        print(leftRoadSensor,centerRoadSensor,rightRoadSensor)
 
         # basic control
         if centerRoadSensor:
@@ -88,18 +88,18 @@ class Controller:
 
 
         # are we in right or left turn segment?
-        if not leftRoadSensor:
-            if not "lost road on left" in self.contextStack:
-                self.contextStack.append("lost road on left")
-            self.timer1+=1
-        if leftRoadSensor:
-            if "lost road on left" in self.contextStack:
-                self.contextStack.remove("lost road on left")
-                print(self.timer1)
-            self.timer1 = 0
+        # if not leftRoadSensor:
+        #     if not "lost road on left" in self.contextStack:
+        #         self.contextStack.append("lost road on left")
+        #     self.timer1+=1
+        # if leftRoadSensor:
+        #     if "lost road on left" in self.contextStack:
+        #         self.contextStack.remove("lost road on left")
+        #         print(self.timer1)
+        #     self.timer1 = 0
 
-        if self.timer1>5:
-            self.generalStack.append("turn right")
+        # if self.timer1>5:
+        #     self.generalStack.append("turn right")
 
 
         #debugs. override wheels for debugging
