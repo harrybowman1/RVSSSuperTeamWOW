@@ -34,10 +34,24 @@ pygame.key.set_repeat(100) #holding a key sends continuous KEYDOWN events. Input
 ppi.set_velocity(0,0)
 print("initialise camera")
 camera = ppi.VideoStreamWidget('http://localhost:8080/camera/get')
-INNER_WHEEL = 25
-OUTER_WHEEL = 35
 
 
+def smooth_command(history):
+    """returns most likely command along with the number of occurences"""
+    histogram = [0, 0, 0]
+    for elem in history:
+        histogram[elem] = histogram[elem] + 1
+    confidence = max(histogram)
+    best_command = max(zip(histogram, range(len(histogram))))[1]
+    return best_command, confidence
+
+def ramp(value, value_prev, slope):
+    if value > value_prev:
+        return min(value, value_prev+slope)
+    elif value < value_prev:
+        return max(value, value_prev-slope)
+    return value
+        
 
 if __name__=="__main__":
     #~~~~~~~~~~~~ SET UP Game ~~~~~~~~~~~~~~
@@ -77,12 +91,20 @@ if __name__=="__main__":
     INNER_ADJ = int(10 *scale)
     OUTER_ADJ = int(15 *scale)
     STRAIGHT_ADJ = int(15 *scale)
+    ACCELERATION = 5
 
     steerConf = 0
     steerTracker = 4
     steerThresh = 3
     trackConf = 0
     trackTracker = 4
+
+    state = 4
+    n_history_keep = 5
+    steer_history = []
+    track_history = []
+
+    left_perv, right_prev = (0, 0)
 
     try:
         # MAIN LOOP
@@ -93,7 +115,12 @@ if __name__=="__main__":
             image = camera.frame
             #set controls
             steer, track = modelPredictSteerClass(image, net)
-            
+            track_history.append(track)
+            steer_history.append(steer)
+            if len(steer_history) > n_history_keep:
+                del track_history[0]
+                del steer_history[0]
+
             #Check confidence
             if trackTracker == track:
                 trackConf += 1
@@ -106,54 +133,62 @@ if __name__=="__main__":
                 steerConf = 0
                 steerTracker = steer
             
-            # steerAdd = trackConf 
+            smoothed_steer, smoothed_steer_conf = smooth_command(steer_history)
+            smoothed_track, _ = smooth_command(track_history)
             
             #If steer conf is high, change the steer
-            if steerConf > steerThresh:
+            if smoothed_steer_conf > steerThresh:
                 # steerVals.append(steer)
                 # trackVals.append(track)
                 #Cornering
-                if steer == LEFT and track == LEFT:
+                if smoothed_steer == LEFT and smoothed_track == LEFT:
                     left, right = INNER_TURN, OUTER_TURN
                     # print("turning left on left")
-                elif steer == RIGHT and track == RIGHT:
+                elif steer == RIGHT and smoothed_track == RIGHT:
                     left,right = OUTER_TURN, INNER_TURN
                     # print("turning right on right")
 
                 #Fanging
-                elif steer == STRAIGHT and track == STRAIGHT:
+                elif smoothed_steer == STRAIGHT and smoothed_track == STRAIGHT:
                     left,right = FANGIN, FANGIN 
                     # print("FANGING")
 
                 #Adjusting
-                elif steer == LEFT and track != LEFT:
+                elif smoothed_steer == LEFT and smoothed_track != LEFT:
                     left, right = INNER_ADJ, OUTER_ADJ 
                     # print("Adjusting left")
-                elif steer == RIGHT and track != RIGHT:
+                elif smoothed_steer == RIGHT and smoothed_track != RIGHT:
                     left, right = OUTER_ADJ, INNER_ADJ 
                     # print("Adjusting right")
-                elif steer == STRAIGHT and track != STRAIGHT:
+                elif smoothed_steer == STRAIGHT and smoothed_track != STRAIGHT:
                     left, right = STRAIGHT_ADJ, STRAIGHT_ADJ 
                     # print("adjusting straight")
                 else:
                     raise Exception ("Wrong combo of steer and track")
 
-                if steer == LEFT:
+                if smoothed_steer == LEFT:
                     steerWord = "LEFT"
-                elif steer == RIGHT:
+                elif smoothed_steer == RIGHT:
                     steerWord = "RIGHT"
-                elif steer == STRAIGHT:
+                elif smoothed_steer == STRAIGHT:
                     steerWord = "STRAIGHT"
 
-                if track == LEFT:
+                if smoothed_track == LEFT:
                     trackWord = "LEFT"
-                elif track == RIGHT:
+                elif smoothed_track == RIGHT:
                     trackWord = "RIGHT"
-                elif track == STRAIGHT:
+                elif smoothed_track == STRAIGHT:
                     trackWord = "STRAIGHT"
+
+                # apply ram to make smooth acceleration
+                left = ramp(left, left_prev, ACCELERATION)
+                right = ramp(right, right_prev, ACCELERATION)
+                
                 print("Steer: "+ steerWord, "\t Track: ", trackWord)
                 print(left, right)
                 ppi.set_velocity(left, right)
+                
+                left_prev, right_prev = left, right
             
 
 
