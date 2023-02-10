@@ -78,13 +78,13 @@ class Controller:
         if centerRoadSensor:
             leftMotor=20
             rightMotor=20
-        # else:
-        #     if leftEdgeSensor:
-        #         leftMotor = -10
-        #         rightMotor = 20
-        #     if rightEdgeSensor:
-        #         leftMotor = 20
-        #         rightMotor = -10
+        else:
+            if leftEdgeRoad:
+                leftMotor = -10
+                rightMotor = 20
+            if rightEdgeRoad:
+                leftMotor = 20
+                rightMotor = -10
 
 
 

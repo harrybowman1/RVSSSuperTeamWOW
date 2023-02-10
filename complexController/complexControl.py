@@ -50,6 +50,7 @@ if __name__=="__main__":
                         quit()
                     if event.key == pygame.K_UP:
                         cv2.imwrite("data/testimg.jpg", image)
+                        ppi.set_velocity(0,0)
                         quit()
     #stops motors on shutdown
     except KeyboardInterrupt:
