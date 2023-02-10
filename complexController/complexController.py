@@ -80,6 +80,11 @@ class Controller:
         if centerRoadSensor:
             leftMotor=20
             rightMotor=20
+            if not leftEdgeRoad:
+                rightMotor-=10
+            if not rightEdgeRoad:
+                leftMotor-=10
+
         else:
             if leftEdgeRoad:
                 leftMotor = -10
@@ -89,7 +94,7 @@ class Controller:
                 rightMotor = -10
             if centerGlareSensor:
                 leftMotor=10
-                rightMotor=0
+                rightMotor=10
 
 
 
@@ -103,7 +108,7 @@ class Controller:
             rightMotor = -10
 
         if (not centerRoadSensor and not leftRoadSensor and not rightRoadSensor):
-            if self.time%120>60:
+            if self.time%120>45:
                 leftMotor = 10
                 rightMotor = -10
             else:
