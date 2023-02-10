@@ -44,6 +44,7 @@ class Controller:
         rightMotor = 0
         road = np.array([100,100,100])
         grass = np.array([80,150,80])
+        glare = np.array([255,255,255])
 
         #maintain stacks. empty general stack
         self.generalStack = []
@@ -69,6 +70,7 @@ class Controller:
         leftGrassSensor = np.linalg.norm(leftCloseSensor-grass)<100
         rightGrassSensor = np.linalg.norm(rightCloseSensor-grass)<100
         centerGrassSensor = np.linalg.norm(centerCloseSensor-grass)<100
+        centerGlareSensor = np.linalg.norm(centerCloseSensor-glare)<50
 
         # print(leftFarRoadSensor,centerFarRoadSensor,rightFarRoadSensor)
         print(leftRoadSensor,centerRoadSensor,rightRoadSensor)
@@ -85,6 +87,10 @@ class Controller:
             if rightEdgeRoad:
                 leftMotor = 20
                 rightMotor = -10
+            if centerGlareSensor:
+                leftMotor=10
+                rightMotor=10
+
 
 
 
