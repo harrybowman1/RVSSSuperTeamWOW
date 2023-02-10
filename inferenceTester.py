@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from simpleNetwork import CustomBiggerNet
 import numpy as np
 from glob import glob
@@ -10,7 +11,6 @@ from os import path
 import matplotlib.pyplot as plt 
 import torch.optim as optim
 import torch
-#!/usr/bin/env python3
 import time
 import click
 import math
@@ -20,23 +20,7 @@ import cv2
 import numpy as np
 import penguinPi as ppi
 import pygame
-# from networkTrainer import *
 from HarrysLibs import *
-
-
-#~~~~~~~~~~~~ SET UP Game ~~~~~~~~~~~~~~
-pygame.init()
-pygame.display.set_mode((300,300)) #size of pop-up window
-pygame.key.set_repeat(100) #holding a key sends continuous KEYDOWN events. Input argument is milli-seconds delay between events and controls the sensitivity
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-# stop the robot 
-ppi.set_velocity(0,0)
-print("initialise camera")
-camera = ppi.VideoStreamWidget('http://localhost:8080/camera/get')
-INNER_WHEEL = 25
-OUTER_WHEEL = 35
-
 
 
 if __name__=="__main__":
@@ -54,8 +38,7 @@ if __name__=="__main__":
     camera = ppi.VideoStreamWidget('http://localhost:8080/camera/get')
     time.sleep(2)
     print(camera)
-    INNER_WHEEL = 25
-    OUTER_WHEEL = 35
+
 
     #Load the model from file
     print("using preloaded model")
@@ -70,13 +53,13 @@ if __name__=="__main__":
     RIGHT = 0
 
     #Speed consts
-    scale = 0.2
+    scale = 1
     FANGIN = int(20*scale)
     INNER_TURN = int(0 *scale)
     OUTER_TURN = int(20 *scale)
     INNER_ADJ = int(10 *scale)
     OUTER_ADJ = int(15 *scale)
-    STRAIGHT_ADJ = int(15 *scale)
+    STRAIGHT_ADJ = int(10 *scale)
 
     steerConf = 0
     steerTracker = 4
@@ -89,29 +72,28 @@ if __name__=="__main__":
         steerVals = []
         trackVals = []
         while True:
+            
             #get image
             image = camera.frame
             #set controls
             steer, track = modelPredictSteerClass(image, net)
-            
+
             #Check confidence
             if trackTracker == track:
                 trackConf += 1
             else:
                 trackConf = 0
                 trackTracker = track
+
             if steerTracker == steer:
                 steerConf += 1
             else:
                 steerConf = 0
                 steerTracker = steer
-            
-            # steerAdd = trackConf 
-            
+             
             #If steer conf is high, change the steer
             if steerConf > steerThresh:
-                # steerVals.append(steer)
-                # trackVals.append(track)
+
                 #Cornering
                 if steer == LEFT and track == LEFT:
                     left, right = INNER_TURN, OUTER_TURN
@@ -120,7 +102,7 @@ if __name__=="__main__":
                     left,right = OUTER_TURN, INNER_TURN
                     # print("turning right on right")
 
-                #Fanging
+                #Fanging = Fast in bogan harry speak
                 elif steer == STRAIGHT and track == STRAIGHT:
                     left,right = FANGIN, FANGIN 
                     # print("FANGING")
@@ -138,6 +120,7 @@ if __name__=="__main__":
                 else:
                     raise Exception ("Wrong combo of steer and track")
 
+                #Printing for debugging
                 if steer == LEFT:
                     steerWord = "LEFT"
                 elif steer == RIGHT:
@@ -152,9 +135,11 @@ if __name__=="__main__":
                 elif track == STRAIGHT:
                     trackWord = "STRAIGHT"
                 print("Steer: "+ steerWord, "\t Track: ", trackWord)
-                print(left, right)
-                ppi.set_velocity(left, right)
-            
+                
+                ppi.set_velocity(left,right)
+            else:
+                print("Not confident")
+                
 
 
 

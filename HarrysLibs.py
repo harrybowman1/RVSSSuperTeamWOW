@@ -79,9 +79,10 @@ def showClassDist(DL):
     
 
 def convertLabel(y):
-    if y > 0.1: #left
+    thresh = 0.2
+    if y > thresh: #Right
         label= 0
-    elif y < -0.1: #right
+    elif y < -thresh: #Left
         label= 2
     else: #Straight
         label= 1
@@ -95,11 +96,18 @@ def convertLabel(y):
 def modelPredictSteerClass(img, net):
     "Takes in the image and returns the driving command using a trained network"
     im = np.moveaxis(img,2,0)
+    cropIm = img[40:,:,:]
+
+    transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+    imgTensor = transform(cropIm)
     #Get the image as a tensor and downsize it
-    imgTensor = torch.from_numpy(im)
-    imgTensor = imgTensor.unsqueeze(0)
+    # imgTensor = torch.from_numpy(im)
+    # imgTensor = imgTensor.unsqueeze(0)
     # print(imgTensor)
+
+    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
     inputs = TF.resize(imgTensor, [32,32])
+    
     # print(type(inputs))
     inputs = inputs.type(torch.float32)
     # print(inputs.shape)
@@ -113,26 +121,31 @@ def modelPredictSteerClass(img, net):
 
     #Convert Track Type
     outTrack = torch.argmax(output[3:]).numpy()
+
+    #HERE DOWN IS REDUNDANT
     # print(outTrack)
-    if outSteer==0:
-        print("hookin left")
+    if outSteer==2:
+        # print("hookin left")
         action= 'LEFT'
     elif outSteer == 1:
-        print("straight down the straight")
+        # print("straight down the straight")
         action= "STRAIGHT"
-    elif outSteer == 2:
-        print("fangin right")
+    elif outSteer == 0:
+        # print("fangin right")
         action= "RIGHT"
     else:
         raise Exception("Error no turn decided")
 
 
-    if outTrack==0:
+    if outTrack==2:
         print("Track left")
     elif outTrack== 1:
         print("Track Straight")
-    elif outTrack == 2:
+    elif outTrack == 0:
         print("Track right")
     else:
         raise Exception("Error no turn decided")
+    # print("\n\n")
+
     return outSteer, outTrack
+
